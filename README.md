@@ -1,2 +1,2 @@
 # PGP
-Projeto da matéria de Planejamento de gestão de projetos.
+Exemplos de códigos para podermos utilizar durante o desenvolvimento do nosso aplicativo.
