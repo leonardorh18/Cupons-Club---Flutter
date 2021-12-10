@@ -15,7 +15,11 @@ class CupomDAO {
     List <Cupom> listaCupons = [];
 
     try {
-        var result = await dbconn.query("""select c.id as cupom_id, r.id as est_id, data_criacao,
+        var result = await dbconn.query("""select 
+          r.id as est_id, r.email as email, r.nome as nome, r.rua as rua, r.bairro as bairro,
+          r.cidade as cidade, r.cep as cep, r.estado as estado, r.telefone as telefone, 
+          r.numero as numero,
+          c.id as cupom_id,  data_criacao,
           data_termino, descricao, porcentagem_desconto, 
           preco_do_produto, nome_produto, contagem_cupons,
           link_imagem from cupom c  inner join estabelecimento r on r.id = c.fk_estabelecimento_id""");
@@ -24,7 +28,7 @@ class CupomDAO {
 
           var est_id = row['est_id'];
           var cupom_id = row['cupom_id'];
-          print("EST ID" + est_id.toString());
+          //print("EST ID" + est_id.toString());
 
           Cupom cupom = new Cupom(
                 row['cupom_id'], row['data_criacao'], row['contagem_cupons'],
@@ -32,14 +36,22 @@ class CupomDAO {
                 row['preco_do_produto'], row['link_imagem']
           );
 
-         EstabelecimentoDAO estDao = EstabelecimentoDAO();
-          TarefaDAO tarefaDAO = TarefaDAO();
-           
-          cupom.estabelecimento = await estDao.getEstabelecimentoById(est_id.toString());
+           cupom.estabelecimento = new Estabelecimento(
+                    bairro: row['bairro'],
+                    numero: row['numero'],
+                    rua: row['rua'],
+                    cep: row['cep'],
+                    cidade: row['cidade'],
+                    estado: row['estado'],
+                    nome: row['nome'],
+                    email:row['email'],
+                    id: row['id'],
+                    telefone: row['telefone']);
 
-          cupom.setListaTarefas = await tarefaDAO.getTarefasByCupomId(cupom_id.toString());
+        TarefaDAO tarefaDAO = TarefaDAO();
+        cupom.setListaTarefas = await tarefaDAO.getTarefasByCupomId(cupom_id.toString());
 
-          listaCupons.add(cupom);
+        listaCupons.add(cupom);
 
         }
 
