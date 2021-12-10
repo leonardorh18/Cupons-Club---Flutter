@@ -1,3 +1,6 @@
+import 'package:teste/models/Estabelecimento.dart';
+import 'package:teste/models/Tarefa.dart';
+
 class Cupom {
 
   var _id ;
@@ -5,29 +8,29 @@ class Cupom {
   var _data_termino;
   var _descricao;
   var _porc_desconto ;
-  var _preco ;
+  var _preco;
   var _nome_produto ;
   var _contagem_cupons ;
-  var _estabelecimento_id ;
-  var _estabelecimento;
   var _link_imagem;
-  
+  Estabelecimento _estabelecimento = Estabelecimento();
+  List <Tarefa> _listaTarefas = [];
 
-    
+
   Cupom(this._id ,this._data_criacao, this._contagem_cupons, this._data_termino, 
-  this._descricao, this._estabelecimento_id,  this._estabelecimento,
-        this._nome_produto, this._porc_desconto, this._preco, this._link_imagem);
+  this._descricao, 
+  this._nome_produto, this._porc_desconto, this._preco, this._link_imagem);
 
- getNome(){
-  return this._nome_produto;
-}
+  List get getListaTarefas => this._listaTarefas;
+
+  set setListaTarefas(List<Tarefa> listaTarefas) => this._listaTarefas = listaTarefas;
+
+  Estabelecimento get estabelecimento => this._estabelecimento;
+
+ set estabelecimento(Estabelecimento value) => this._estabelecimento = value;
+
  get link_imagem => this._link_imagem;
 
  set link_imagem(var value) => this._link_imagem = value;
-
-get getEstabelecimento => this._estabelecimento;
-
- set setEstabelecimento( estabelecimento) => this._estabelecimento = estabelecimento;
 
   get id => this._id;
 
@@ -60,12 +63,6 @@ get getEstabelecimento => this._estabelecimento;
   get contagem_cupons => this._contagem_cupons;
 
  set contagem_cupons( value) => this._contagem_cupons = value;
-
-  get estabelecimento_id => this._estabelecimento_id;
-
- set estabelecimento_id( value) => this._estabelecimento_id = value;
-
-  
 
  
 }

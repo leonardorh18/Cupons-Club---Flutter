@@ -33,7 +33,7 @@ class _ListCuponsState extends State<ListCupons> {
   buscarCupons() async {
 
     listaCupons = await cupomDAO.getCupons();
-    print('TAMANHO '+ listaCupons.length.toString());
+    //print('TAMANHO '+ listaCupons.length.toString());
     setState(() {
       carregando = false;
     });
@@ -137,7 +137,7 @@ class _ListCuponsState extends State<ListCupons> {
                        Align(
 
                          alignment: Alignment.centerLeft,
-                         child:Text(cupom.getEstabelecimento.toString(),
+                         child:Text(cupom.estabelecimento.nome.toString(),
                             style: GoogleFonts.montserrat(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white)
                             )
                        ),
@@ -146,7 +146,7 @@ class _ListCuponsState extends State<ListCupons> {
 
                       Align(
                           alignment: Alignment.centerLeft,
-                          child: Text('Fernando Machado - 330D 1.7km',
+                          child: Text('${cupom.estabelecimento.rua} - ${cupom.estabelecimento.numero}, ${cupom.estabelecimento.bairro}- 0.0km',
                           style: GoogleFonts.montserrat(fontSize: 13, fontWeight: FontWeight.w300, fontStyle: FontStyle.italic,color: Colors.white) //TextStyle( color: Colors.white, fontWeight: FontWeight.w400, fontSize: 13),),
                           )
                         ),

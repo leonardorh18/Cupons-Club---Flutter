@@ -1,6 +1,9 @@
 
 import 'package:teste/DAO/Conn.dart';
+import 'package:teste/DAO/EstabelecimentoDAO.dart';
+import 'package:teste/DAO/TarefaDAO.dart';
 import 'package:teste/models/Cupom.dart';
+import 'package:teste/models/Estabelecimento.dart';
 
 class CupomDAO {
 
@@ -11,28 +14,43 @@ class CupomDAO {
     var dbconn = await this._conn.connectDB(); 
     List <Cupom> listaCupons = [];
 
-    if (dbconn != null) {
-        var result = await dbconn.query("""select r.nome as est_nome, r.id as est_id, c.id as cupom_id, data_criacao,
+    try {
+        var result = await dbconn.query("""select c.id as cupom_id, r.id as est_id, data_criacao,
           data_termino, descricao, porcentagem_desconto, 
           preco_do_produto, nome_produto, contagem_cupons,
           link_imagem from cupom c  inner join estabelecimento r on r.id = c.fk_estabelecimento_id""");
 
         for (var row in result){
-          print(row);
-          listaCupons.add(new Cupom(
+
+          var est_id = row['est_id'];
+          var cupom_id = row['cupom_id'];
+          print("EST ID" + est_id.toString());
+
+          Cupom cupom = new Cupom(
                 row['cupom_id'], row['data_criacao'], row['contagem_cupons'],
-                row['data_termino'], row['descricao'], row['est_id'],
-                row['est_nome'], row['nome_produto'], row['porcentagem_desconto'],
+                row['data_termino'], row['descricao'], row['nome_produto'], row['porcentagem_desconto'],
                 row['preco_do_produto'], row['link_imagem']
-          ));
+          );
+
+         EstabelecimentoDAO estDao = EstabelecimentoDAO();
+          TarefaDAO tarefaDAO = TarefaDAO();
+           
+          cupom.estabelecimento = await estDao.getEstabelecimentoById(est_id.toString());
+
+          cupom.setListaTarefas = await tarefaDAO.getTarefasByCupomId(cupom_id.toString());
+
+          listaCupons.add(cupom);
+
         }
-      print("TAMHNOOOOOOO "+ listaCupons.length.toString());
+
+      //print("TAMHNOOOOOOO "+ listaCupons.length.toString());
       await  dbconn.close();
       return listaCupons;
 
-    } else {
+    } catch (e) {
       await  dbconn.close();
-      print("ERRO AO SE CONECTAR");
+      print("ERRO BUSCAR CUPONS");
+      throw Exception(e.toString());
 
     }
 
