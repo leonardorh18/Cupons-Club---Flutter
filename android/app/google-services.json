@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "72861110626",
+    "project_id": "teste-login-d7ccd",
+    "storage_bucket": "teste-login-d7ccd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:72861110626:android:85e8eda1d9ae82d2aedc3b",
+        "android_client_info": {
+          "package_name": "com.leohrocha.teste"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "72861110626-g5qed5ruq4j34le29qq9n3sa0j1abi1a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.leohrocha.teste",
+            "certificate_hash": "e1ed45a38d4cd99e5e9cc49c5aa36bc98be71b1e"
+          }
+        },
+        {
+          "client_id": "72861110626-37bq7ath8298i4otqo4cd6u5vjhtk93n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSaijYL1gp0f_uAiVkAPohjtPkh6lzebI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "72861110626-37bq7ath8298i4otqo4cd6u5vjhtk93n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
