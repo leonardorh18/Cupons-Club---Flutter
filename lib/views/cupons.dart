@@ -3,10 +3,14 @@ import 'dart:ui';
 
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:teste/DAO/CupomDAO.dart';
+import 'package:teste/DAO/TarefaDAO.dart';
 import 'package:teste/models/Cupom.dart';
 import 'package:teste/Utils/utils.dart';
+import 'package:teste/models/Tarefa.dart';
+import 'package:teste/views/widgets/cupom_dialog.dart';
 class ListCupons extends StatefulWidget {
   
 
@@ -15,6 +19,16 @@ class ListCupons extends StatefulWidget {
 }
 
 class _ListCuponsState extends State<ListCupons> {
+
+
+
+List <Cupom> listaCupons = [];
+Utils utils = Utils();
+CupomDAO cupomDAO = CupomDAO();
+bool carregando = true;
+TarefaDAO tarefaDAO = TarefaDAO();
+CupomDialog cupomDialog = CupomDialog();
+
 
   final spinkit = SpinKitWanderingCubes(
   itemBuilder: (BuildContext context, int index) {
@@ -25,10 +39,6 @@ class _ListCuponsState extends State<ListCupons> {
     );
   },
 );
-  List <Cupom> listaCupons = [];
-  Utils utils = Utils();
-  CupomDAO cupomDAO = CupomDAO();
-  bool carregando = true;
 
   buscarCupons() async {
 
@@ -39,6 +49,9 @@ class _ListCuponsState extends State<ListCupons> {
     });
 
   }
+
+
+
   @override
   void initState()  {
     
@@ -92,7 +105,10 @@ class _ListCuponsState extends State<ListCupons> {
               
               child: InkWell( 
               onTap: () async{
-
+                
+                  utils.loading(context);
+                
+                cupomDialog.detalheCupom(cupom, context);
                 
 
               },

@@ -48,8 +48,8 @@ class CupomDAO {
                     id: row['id'],
                     telefone: row['telefone']);
 
-        TarefaDAO tarefaDAO = TarefaDAO();
-        cupom.setListaTarefas = await tarefaDAO.getTarefasByCupomId(cupom_id.toString());
+        //TarefaDAO tarefaDAO = TarefaDAO();
+        //cupom.setListaTarefas = await tarefaDAO.getTarefasByCupomId(cupom_id.toString());
 
         listaCupons.add(cupom);
 

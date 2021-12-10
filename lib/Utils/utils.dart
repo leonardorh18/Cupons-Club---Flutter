@@ -10,8 +10,8 @@ class Utils {
       showDialog(
               context: context,
               builder: (BuildContext context){
-                  return SpinKitRotatingCircle(
-                      color: Colors.white,
+                  return SpinKitHourGlass(
+                      color: Colors.red,
                       size: 50.0,
                     );
               }
