@@ -11,24 +11,19 @@ import 'package:teste/models/Cupom.dart';
 import 'package:teste/Utils/utils.dart';
 import 'package:teste/models/Tarefa.dart';
 import 'package:teste/views/widgets/cupom_dialog.dart';
-class ListCupons extends StatefulWidget {
-  
 
+class ListCupons extends StatefulWidget {
   @override
   _ListCuponsState createState() => _ListCuponsState();
 }
 
 class _ListCuponsState extends State<ListCupons> {
-
-
-
-List <Cupom> listaCupons = [];
-Utils utils = Utils();
-CupomDAO cupomDAO = CupomDAO();
-bool carregando = true;
-TarefaDAO tarefaDAO = TarefaDAO();
-CupomDialog cupomDialog = CupomDialog();
-
+  List <Cupom> listaCupons = [];
+  Utils utils = Utils();
+  CupomDAO cupomDAO = CupomDAO();
+  bool carregando = true;
+  TarefaDAO tarefaDAO = TarefaDAO();
+  CupomDialog cupomDialog = CupomDialog();
 
   final spinkit = SpinKitWanderingCubes(
   itemBuilder: (BuildContext context, int index) {
@@ -50,15 +45,10 @@ CupomDialog cupomDialog = CupomDialog();
 
   }
 
-
-
   @override
-  void initState()  {
-    
-     buscarCupons(); 
+  void initState()  {    
+    buscarCupons(); 
     super.initState();
-
-
   }
   
   Widget build(BuildContext context) {
@@ -78,7 +68,7 @@ CupomDialog cupomDialog = CupomDialog();
                        ),),
 
                        Padding(
-                         padding: EdgeInsets.fromLTRB(20, 3, 10,10),
+                         padding: EdgeInsets.fromLTRB(20, 3, 10,50),
                          child: Align(
                          alignment: Alignment.centerLeft,
                          child:Text('Veja os cupons que separamos para você!',
@@ -96,50 +86,50 @@ CupomDialog cupomDialog = CupomDialog();
               Cupom cupom = listaCupons[index];
 
               return Card(
- 
-              color: Colors.redAccent.shade700,
+              color: Colors.red,
               elevation: 10,
+              margin: EdgeInsets.fromLTRB(30, 7, 0, 5),
+
               shape: BeveledRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),	
+                borderRadius:BorderRadius.only(
+                   bottomLeft: Radius.circular(15,),
+                   topLeft: Radius.circular(15,),
+                ),
               ),
               
               child: InkWell( 
               onTap: () async{
-                
-                  utils.loading(context);
-                
+                utils.loading(context);
                 cupomDialog.detalheCupom(cupom, context);
-                
-
               },
               child: Container(
               
               child: Row(
                 children: [
-                  
                       Container(
-                        height: 130,
+                        height: 150,
                         decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                    
+                          shape: BoxShape.circle,
                       ),
 
                       child: Padding(
                         padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                        child: ClipOval(
+                        
+                        child: ClipRect(
                           child: Image.network(
                             cupom.link_imagem.toString(),
-                            height: 20,
-                            width: 120,
-                            fit: BoxFit.cover,
+                            height: 100,
+                            width: 100,
+                            fit: BoxFit.fitHeight, 
                           ),
-                        ),)
+                        ),
+                        )
                       ),
 
                     DottedLine(
                       dashLength: 10,
                       dashGapLength: 10,
-                      lineThickness: 5,
+                      lineThickness: 4,
                       dashColor: Colors.white,
                       direction: Axis.vertical,
                       lineLength: 130,
@@ -147,11 +137,9 @@ CupomDialog cupomDialog = CupomDialog();
 
                     SizedBox(width: 10,),
 
-                    Expanded(  child: Column(
+                    Expanded(child: Column(
                       children: [
-
                        Align(
-
                          alignment: Alignment.centerLeft,
                          child:Text(cupom.estabelecimento.nome.toString(),
                             style: GoogleFonts.montserrat(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white)
@@ -162,7 +150,7 @@ CupomDialog cupomDialog = CupomDialog();
 
                       Align(
                           alignment: Alignment.centerLeft,
-                          child: Text('${cupom.estabelecimento.rua} - ${cupom.estabelecimento.numero}, ${cupom.estabelecimento.bairro}- 0.0km',
+                          child: Text('${cupom.estabelecimento.rua} - ${cupom.estabelecimento.numero}, ${cupom.estabelecimento.bairro} - 0.0km',
                           style: GoogleFonts.montserrat(fontSize: 13, fontWeight: FontWeight.w300, fontStyle: FontStyle.italic,color: Colors.white) //TextStyle( color: Colors.white, fontWeight: FontWeight.w400, fontSize: 13),),
                           )
                         ),
@@ -171,7 +159,7 @@ CupomDialog cupomDialog = CupomDialog();
 
                       Align(
                         alignment: Alignment.centerRight,
-                        child:Text('${cupom.nome_produto} - ${cupom.porc_desconto}% off',
+                        child:Text('${cupom.nome_produto} - ${cupom.porc_desconto.toInt()}% off',
                           style: GoogleFonts.montserrat(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.white))
                       ),
 
@@ -179,7 +167,7 @@ CupomDialog cupomDialog = CupomDialog();
 
                       Align(
                         alignment: Alignment.centerRight,
-                        child:Text('De R\$${cupom.preco} por R\$'+ (cupom.preco * (1 - (cupom.porc_desconto/100))).toStringAsFixed(2) ,
+                        child:Text('Por R\$'+ (cupom.preco * (1 - (cupom.porc_desconto/100))).toStringAsFixed(2) ,
                           style: GoogleFonts.montserrat(fontSize: 13, color: Colors.white, fontWeight: FontWeight.bold),),
                       ),
                       
@@ -189,8 +177,7 @@ CupomDialog cupomDialog = CupomDialog();
                       ],
                     )
                     ),
-                    SizedBox(width: 3,),
-
+                    SizedBox(width: 5,),
 
 
                 ],

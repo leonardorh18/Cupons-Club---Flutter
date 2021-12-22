@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:teste/views/cupons.dart';
+import 'package:flutter/services.dart';
 
 class Home extends StatefulWidget {
  
-
   @override
   _HomeState createState() => _HomeState();
 }
@@ -16,7 +16,6 @@ class _HomeState extends State<Home> {
     ListCupons(),
     Container(child:Text('oi tela 2')),
     Container(child:Text('oi tela 3')),
-
   ];
 
   var indexTela = 0;
@@ -24,8 +23,14 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+          value:SystemUiOverlayStyle(
+          statusBarColor: Colors.red, //i like transaparent :-)
+          systemNavigationBarColor: Colors.white, // navigation bar color
+          statusBarIconBrightness: Brightness.dark, // status bar icons' color
+          systemNavigationBarIconBrightness:Brightness.dark, //navigation bar icons' color
+    ), 
+    child: Scaffold(
       appBar: AppBar(
         
           shape: RoundedRectangleBorder(
@@ -37,7 +42,6 @@ class _HomeState extends State<Home> {
           title: Text('Nome do aplicativo'),
 
           actions: [
-
               Padding(
               padding: EdgeInsets.only(right: 20.0),
               child: GestureDetector(
@@ -69,17 +73,18 @@ class _HomeState extends State<Home> {
             ),
 
             SalomonBottomBarItem(
-              icon: Icon(Icons.favorite_border),
-              title: Text("Tela"),
+              icon: Icon(Icons.favorite),
+              title: Text("Fidelidade"),
               selectedColor: Colors.pink,
             ),
               SalomonBottomBarItem(
-              icon: FaIcon(FontAwesomeIcons.arrowLeft),
-              title: Text("Tela 2"),
+              icon: FaIcon(FontAwesomeIcons.history),
+              title: Text("Histórico"),
               selectedColor: Colors.pink,
             ),
 
           ]
+      ),
       ),
     );
   }
