@@ -13,6 +13,7 @@ class TarefaDAO{
     try {
       List<Tarefa> listaTarefas = [];
       var result= await dbconn.query(""" select * from tarefa where fk_cupom_id = ${cupom_id} """);
+      
       for (var row in result){
 
         listaTarefas.add( new Tarefa(row['descricao'], row['id']));
