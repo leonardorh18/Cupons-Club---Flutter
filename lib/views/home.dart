@@ -3,18 +3,17 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:teste/views/cupons.dart';
 import 'package:flutter/services.dart';
+import 'package:teste/views/signin.dart';
 
 class Home extends StatefulWidget {
- 
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
   List<Widget> telas = [
-
+    Cadastro(),
     ListCupons(),
-    Container(child:Text('oi tela 2')),
     Container(child:Text('oi tela 3')),
   ];
 
