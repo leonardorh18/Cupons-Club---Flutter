@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
-
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -10,7 +9,8 @@ import 'package:teste/DAO/TarefaDAO.dart';
 import 'package:teste/models/Cupom.dart';
 import 'package:teste/Utils/utils.dart';
 import 'package:teste/models/Tarefa.dart';
-import 'package:teste/views/widgets/cupom_dialog.dart';
+import 'package:teste/views/detalhes_cupom.dart';
+import 'package:page_transition/page_transition.dart';
 
 class ListCupons extends StatefulWidget {
   @override
@@ -23,7 +23,7 @@ class _ListCuponsState extends State<ListCupons> {
   CupomDAO cupomDAO = CupomDAO();
   bool carregando = true;
   TarefaDAO tarefaDAO = TarefaDAO();
-  CupomDialog cupomDialog = CupomDialog();
+  
 
   final spinkit = SpinKitWanderingCubes(
   itemBuilder: (BuildContext context, int index) {
@@ -98,9 +98,9 @@ class _ListCuponsState extends State<ListCupons> {
               ),
               
               child: InkWell( 
-              onTap: () async{
-                utils.loading(context);
-                cupomDialog.detalheCupom(cupom, context);
+              onTap: () {
+                
+                 Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeftWithFade, child: DetalhesCupom(cupom)));
               },
               child: Container(
               

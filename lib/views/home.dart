@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:teste/views/cupons.dart';
+import 'package:teste/views/widgets/appbar.dart';
 import 'package:flutter/services.dart';
 
 class Home extends StatefulWidget {
@@ -12,13 +13,13 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   List<Widget> telas = [
-
-    ListCupons(),
     Container(child:Text('oi tela 2')),
+    ListCupons(),
     Container(child:Text('oi tela 3')),
   ];
 
-  var indexTela = 0;
+  var indexTela = 1;
+  CustomAppBar appBar = new CustomAppBar();
 
   @override
   Widget build(BuildContext context) {
@@ -31,33 +32,7 @@ class _HomeState extends State<Home> {
           systemNavigationBarIconBrightness:Brightness.dark, //navigation bar icons' color
     ), 
     child: Scaffold(
-      appBar: AppBar(
-        
-          shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(20),
-          ),
-        ),
-
-          title: Text('Nome do aplicativo'),
-
-          actions: [
-              Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                onTap: () {},
-                child: Icon(
-                  Icons.menu,
-                  size: 26.0,
-                ),
-              )
-            ),
-
-      
-          ],
-
-          backgroundColor: Colors.red,
-      ),
+      appBar: appBar.buildAppBar() ,
 
       body: telas[indexTela],
 
@@ -66,16 +41,16 @@ class _HomeState extends State<Home> {
           onTap: (i) => setState(() => indexTela = i),
           items: [
 
-            SalomonBottomBarItem(
-              icon: FaIcon(FontAwesomeIcons.ticketAlt),
-              title: Text("Cupons"),
-              selectedColor: Colors.red[400],
-            ),
 
             SalomonBottomBarItem(
               icon: Icon(Icons.favorite),
               title: Text("Fidelidade"),
               selectedColor: Colors.pink,
+            ),
+            SalomonBottomBarItem(
+              icon: FaIcon(FontAwesomeIcons.ticketAlt),
+              title: Text("Cupons"),
+              selectedColor: Colors.red[400],
             ),
               SalomonBottomBarItem(
               icon: FaIcon(FontAwesomeIcons.history),
