@@ -42,10 +42,10 @@ class _LoginState extends State<Login> {
                     Container(
                         alignment: Alignment.center,
                         padding: const EdgeInsets.all(10),
-                        child: const Text(
+                        child: Text(
                           'Faça login para entrar no aplicativo',
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: GoogleFonts.montserratAlternates(
                             color: Colors.black,
                             fontWeight: FontWeight.w500,
                             fontSize: 30,
@@ -60,10 +60,9 @@ class _LoginState extends State<Login> {
               padding: const EdgeInsets.all(10),
               child: TextField(
                 cursorColor: Colors.black,
-                obscureText: true,
-                controller: passwordController,
+                controller: nameController,
                 decoration: InputDecoration(
-                  labelStyle: TextStyle(
+                  labelStyle: GoogleFonts.montserratAlternates(
                     color: Colors.black,
                   ),
                   focusedBorder: OutlineInputBorder(
@@ -85,7 +84,7 @@ class _LoginState extends State<Login> {
                 obscureText: true,
                 controller: passwordController,
                 decoration: InputDecoration(
-                  labelStyle: TextStyle(
+                  labelStyle: GoogleFonts.montserratAlternates(
                     color: Colors.black,
                   ),
                   focusedBorder: OutlineInputBorder(
@@ -94,22 +93,14 @@ class _LoginState extends State<Login> {
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.red, width: 2.0),
                   ),
-                  labelText: 'E-mail ou telefone',
+                  labelText: 'Senha',
                   filled: true,
                   fillColor: Colors.white,
                 ),
               ),
             ),
-            TextButton(
-              style: TextButton.styleFrom(
-                primary: Colors.black, // Text Color
-              ),
-              onPressed: () {
-                //forgot password screen
-              },
-              child: const Text(
-                'Esqueci a senha',
-              ),
+            SizedBox(
+              height: 10,
             ),
             TextButton(
               style: TextButton.styleFrom(
@@ -118,8 +109,23 @@ class _LoginState extends State<Login> {
               onPressed: () {
                 //forgot password screen
               },
-              child: const Text(
+              child: Text(
+                'Esqueci a senha',
+                style: GoogleFonts.montserratAlternates(
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                primary: Colors.black,
+              ),
+              onPressed: () {
+                //forgot password screen
+              },
+              child: Text(
                 'Criar conta',
+                style: GoogleFonts.montserratAlternates(
+                    fontWeight: FontWeight.bold),
               ),
             ),
             Padding(
@@ -138,8 +144,14 @@ class _LoginState extends State<Login> {
                       print(nameController.text);
                       print(passwordController.text);
                     },
+                    // style: ElevatedButton.styleFrom(
+                    //   primary: Color(0xffEC6262), // Background color
+                    // ),
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xffEC6262), // Background color
+                      primary: Color(0xffEC6262),
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(30.0),
+                      ),
                     ),
                   )),
             )
