@@ -122,8 +122,27 @@ class _DetalhesCupomState extends State<DetalhesCupom> {
                         ),
                     Padding(
                       padding:  EdgeInsets.fromLTRB(15,10,0,0),
+                      child: Expanded(child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text('${widget.cupom.nome_produto.toString()}',
+                            style: GoogleFonts.montserrat(fontSize: 17, fontWeight: FontWeight.w400, color: Colors.black))
+                            )
+                          )
+                        ),  
+                   Padding(
+                      padding:  EdgeInsets.fromLTRB(15,10,0,0),
+                      child: Expanded(child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text('De R\$ ${widget.cupom.preco} por R\$ '+ (widget.cupom.preco * (1 - (widget.cupom.porc_desconto/100))).toStringAsFixed(2) + ' com ${widget.cupom.porc_desconto.toString()}% de desconto',
+                            style: GoogleFonts.montserrat(fontSize: 17, fontWeight: FontWeight.w400, color: Colors.black))
+                        )
+                        )
+                        ),   
+                    Padding(
+                      padding:  EdgeInsets.fromLTRB(15,10,0,0),
                       child: Text(widget.cupom.descricao.toString()),
                     ),
+
                     SizedBox(height: 25,),
                     Align(
                           alignment: Alignment.centerLeft,
