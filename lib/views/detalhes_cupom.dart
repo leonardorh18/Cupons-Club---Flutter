@@ -140,12 +140,12 @@ class _DetalhesCupomState extends State<DetalhesCupom> {
                         ),
                     Padding(
                       padding:  EdgeInsets.fromLTRB(15,10,0,0),
-                      child: Expanded(child: Align(
+                      child:   Align(
                           alignment: Alignment.centerLeft,
                           child: Text('${widget.cupom.nome_produto.toString()}',
                             style: GoogleFonts.comfortaa(fontSize: 15, fontWeight: FontWeight.w800, color: Colors.black))
                             )
-                          )
+                          
                         ),
                       Align(
                         alignment: Alignment.centerLeft,
@@ -159,13 +159,13 @@ class _DetalhesCupomState extends State<DetalhesCupom> {
                     ),  
                    Padding(
                       padding:  EdgeInsets.fromLTRB(15,10,0,0),
-                      child: Expanded(child: Align(
+                      child:  Align(
                           alignment: Alignment.centerLeft,
                           child: Text('De R\$ ${widget.cupom.preco} por R\$ '+ (widget.cupom.preco * (1 - (widget.cupom.porc_desconto/100))).toStringAsFixed(2) + ' com ${widget.cupom.porc_desconto.toString()}% de desconto',
                             style: GoogleFonts.comfortaa(fontSize: 15, fontWeight: FontWeight.w800, color: Colors.redAccent[700])
                             )
                           )
-                        )
+                        
                       ),
                       Align(
                         alignment: Alignment.centerLeft,
