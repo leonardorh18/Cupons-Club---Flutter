@@ -75,6 +75,12 @@ flutter:
     - assets/images/background.png
     - assets/images/login.png
 
+  fonts:   
+    - family: Mont Serrat
+      fonts:
+        - asset: assets/fonts/MontserratAlternates-SemiBold.ttf
+        - asset: assets/fonts/MontserratAlternates-Medium.ttf
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
