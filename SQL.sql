@@ -17,10 +17,11 @@ CREATE TABLE estabelecimento (
 );
 
 CREATE TABLE usuario (
-    emaill TEXT NOT NULL,
-    telefone TEXT NOT NULL,
+  	id int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    email VARCHAR(255) NOT NULL UNIQUE,
+  	senha TEXT NOT NULL,
+    telefone VARCHAR(13) NOT NULL UNIQUE,
     nome TEXT NOT NULL,
-    id int PRIMARY KEY NOT NULL AUTO_INCREMENT
 );
 
 CREATE TABLE cupom (
@@ -36,8 +37,6 @@ CREATE TABLE cupom (
     fk_estabelecimento_id int NOT NULL,
     FOREIGN KEY (fk_estabelecimento_id) REFERENCES estabelecimento(id)
 );
-
-
 
 CREATE TABLE tarefa (
     id int PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -64,8 +63,6 @@ CREATE TABLE links (
     FOREIGN KEY (fk_estabelecimento_id) REFERENCES estabelecimento(id)
 );
 
-
-
 CREATE TABLE cupons_usados (
     fk_cupom_id int NOT NULL,
     fk_usuario_id int  NOT NULL,
@@ -77,7 +74,6 @@ CREATE TABLE cupons_usados (
     FOREIGN KEY (fk_cupom_id) REFERENCES cupom(id),
     FOREIGN KEY (fk_usuario_id) REFERENCES usuario(id)
 );
- 
  
 /*
 ALTER TABLE cupom ADD CONSTRAINT FK_cupom_2
