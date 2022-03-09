@@ -17,10 +17,12 @@ CREATE TABLE estabelecimento (
 );
 
 CREATE TABLE usuario (
-    emaill TEXT NOT NULL,
-    telefone TEXT NOT NULL,
+  	id int NOT NULL AUTO_INCREMENT,
+    email VARCHAR(255) NOT NULL,
+  	senha TEXT NOT NULL,
+    telefone VARCHAR(13) NOT NULL,
     nome TEXT NOT NULL,
-    id int PRIMARY KEY NOT NULL AUTO_INCREMENT
+    PRIMARY KEY (id, email, telefone)
 );
 
 CREATE TABLE cupom (
