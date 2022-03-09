@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:teste/DAO/TarefaDAO.dart';
+import 'package:teste/Utils/utils.dart';
 import 'package:teste/models/Cupom.dart';
 import 'package:teste/models/Tarefa.dart';
 import 'package:teste/views/widgets/appbar.dart';
@@ -20,6 +21,7 @@ class DetalhesCupom extends StatefulWidget {
 class _DetalhesCupomState extends State<DetalhesCupom> {
   CustomAppBar appBar = new CustomAppBar();
   bool carregandoTarefas = true;
+  Utils utils = Utils();
   TarefaDAO tarefaDAO = TarefaDAO();
   CupomDialog cupomDialog = CupomDialog();
     final spinkit = SpinKitFoldingCube(
@@ -46,9 +48,9 @@ class _DetalhesCupomState extends State<DetalhesCupom> {
   Widget build(BuildContext context) {
     return carregandoTarefas ? spinkit : Scaffold(
       appBar:appBar.buildAppBar(),
-      body: Padding( 
+      body: SingleChildScrollView(child: Padding( 
           padding: EdgeInsets.fromLTRB(15, 15, 15, 10),
-          child:Column(
+          child: Column(
                       children: [
                       // ------------------------- NOME
                       Row(
@@ -60,7 +62,7 @@ class _DetalhesCupomState extends State<DetalhesCupom> {
                         Expanded(child:Align(
                           alignment: Alignment.centerLeft,
                           child:Text(widget.cupom.estabelecimento.nome.toString(),
-                            style: GoogleFonts.montserrat(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black))
+                            style: GoogleFonts.montserratAlternates(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black))
                         ),)
 
                         ],
@@ -73,11 +75,19 @@ class _DetalhesCupomState extends State<DetalhesCupom> {
                           padding: EdgeInsets.only(right: 10),
                           child:FaIcon(FontAwesomeIcons.locationArrow, size: 20, color: Colors.blue)
                           ),
-                        Expanded(child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text("""${widget.cupom.estabelecimento.rua.toString()} ${widget.cupom.estabelecimento.numero.toString()}, ${widget.cupom.estabelecimento.numero.toString()}, ${widget.cupom.estabelecimento.bairro}, ${widget.cupom.estabelecimento.cidade}""",
-                            style: GoogleFonts.montserrat(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black))
-                        ),)
+
+                        Expanded(
+                          child:InkWell(
+                          onTap: () async {
+                            await utils.openMap(-34.123, -19.3092);
+                          },
+                          child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text("""${widget.cupom.estabelecimento.rua.toString()} ${widget.cupom.estabelecimento.numero.toString()}, ${widget.cupom.estabelecimento.numero.toString()}, ${widget.cupom.estabelecimento.bairro}, ${widget.cupom.estabelecimento.cidade}""",
+                                style: GoogleFonts.montserratAlternates(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black))
+                              ),
+                          )
+                        )
 
                         ],
                       ),
@@ -89,11 +99,19 @@ class _DetalhesCupomState extends State<DetalhesCupom> {
                           padding: EdgeInsets.only(right: 10),
                           child:FaIcon(FontAwesomeIcons.phone, size: 20, color: Colors.green)
                           ),
-                        Expanded(child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text('${widget.cupom.estabelecimento.telefone}',
-                            style: GoogleFonts.montserrat(fontSize:16, fontWeight: FontWeight.w500, color: Colors.black))
-                        ),)
+
+                          Expanded(child: 
+                          InkWell(
+                          onTap: () async {
+                            await utils.openPhone(widget.cupom.estabelecimento.telefone.toString());
+                          },
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                              child: Text('${widget.cupom.estabelecimento.telefone}',
+                                style: GoogleFonts.montserratAlternates(fontSize:16, fontWeight: FontWeight.w500, color: Colors.black))
+                          ),
+                        )
+                        )
 
                         ],
                       ),
@@ -107,7 +125,7 @@ class _DetalhesCupomState extends State<DetalhesCupom> {
                         Expanded(child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text('${widget.cupom.estabelecimento.email}',
-                            style: GoogleFonts.montserrat(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black))
+                            style: GoogleFonts.montserratAlternates(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black))
                         ),)
 
                         ],
@@ -118,42 +136,75 @@ class _DetalhesCupomState extends State<DetalhesCupom> {
                     Align(
                           alignment: Alignment.centerLeft,
                           child: Text('Cupom válido para:',
-                            style: GoogleFonts.montserrat(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black))
+                            style: GoogleFonts.montserratAlternates(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black))
                         ),
                     Padding(
                       padding:  EdgeInsets.fromLTRB(15,10,0,0),
-                      child: Expanded(child: Align(
+                      child:   Align(
                           alignment: Alignment.centerLeft,
                           child: Text('${widget.cupom.nome_produto.toString()}',
-                            style: GoogleFonts.montserrat(fontSize: 17, fontWeight: FontWeight.w400, color: Colors.black))
+                            style: GoogleFonts.comfortaa(fontSize: 15, fontWeight: FontWeight.w800, color: Colors.black))
                             )
-                          )
-                        ),  
+                          
+                        ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: SizedBox(
+                        width: 170,
+                        child:Divider(
+                            color: Colors.black,
+                            thickness: 1
+                        )
+                      )
+                    ),  
                    Padding(
                       padding:  EdgeInsets.fromLTRB(15,10,0,0),
-                      child: Expanded(child: Align(
+                      child:  Align(
                           alignment: Alignment.centerLeft,
                           child: Text('De R\$ ${widget.cupom.preco} por R\$ '+ (widget.cupom.preco * (1 - (widget.cupom.porc_desconto/100))).toStringAsFixed(2) + ' com ${widget.cupom.porc_desconto.toString()}% de desconto',
-                            style: GoogleFonts.montserrat(fontSize: 17, fontWeight: FontWeight.w400, color: Colors.black))
+                            style: GoogleFonts.comfortaa(fontSize: 15, fontWeight: FontWeight.w800, color: Colors.redAccent[700])
+                            )
+                          )
+                        
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: SizedBox(
+                        width: 170,
+                        child:Divider(
+                            color: Colors.black,
+                            thickness: 1
                         )
-                        )
-                        ),   
+                      )
+                    ), 
                     Padding(
                       padding:  EdgeInsets.fromLTRB(15,10,0,0),
-                      child: Text(widget.cupom.descricao.toString()),
+                      child: Text(widget.cupom.descricao.toString(),
+                       style: GoogleFonts.comfortaa(fontSize: 15, fontWeight: FontWeight.w800, color: Colors.black)),
                     ),
-
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: SizedBox(
+                        width: 170,
+                        child:Divider(
+                            color: Colors.black,
+                            thickness: 1
+                        )
+                      )
+                    ),  
+                  // ------------------- TAREFAS
                     SizedBox(height: 25,),
                     Align(
                           alignment: Alignment.centerLeft,
-                          child: Text('Tarefas:',
-                            style: GoogleFonts.montserrat(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black))
+                          child: Text('Conlua as tarefas para resgatar o cupom:',
+                            style: GoogleFonts.montserratAlternates(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black))
                         ),  
                         SizedBox(height: 10,),
                       
                       
-                      Flexible(
-                        child: ListView.builder(
+                      ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
                           itemCount: widget.cupom.getListaTarefas.length,
                           itemBuilder: (context, index){
 
@@ -161,15 +212,16 @@ class _DetalhesCupomState extends State<DetalhesCupom> {
 
                             return Padding(
                             padding:  EdgeInsets.fromLTRB(15,10,0,0),
-                            child:  Text(tarefa.getDescricao.toString()),
+                            child:  Text('* ' +tarefa.getDescricao.toString(),
+                              style: GoogleFonts.comfortaa(fontSize: 15, color: Colors.black)),
                             );
                           }
 
                         
-                      ),
+                      
                     ),
 
-                     SizedBox(height: 10,),
+                     SizedBox(height: 40,),
                 ElevatedButton(
                           child: Text('Resgatar Cupom'),
                           onPressed: (){
@@ -185,6 +237,8 @@ class _DetalhesCupomState extends State<DetalhesCupom> {
                       ],
                     ),
       )
-    );
+    )
+    )
+    ;
   }
 }

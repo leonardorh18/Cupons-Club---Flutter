@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:teste/views/home.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -15,10 +17,11 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         body: Container(
       decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage('images/background.png'), // sdd
+              image: AssetImage('assets/images/background.png'), // sdd
               fit: BoxFit.cover)),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
@@ -28,14 +31,14 @@ class _LoginState extends State<Login> {
           children: <Widget>[
             Container(
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.7),
+                color: Colors.white.withOpacity(0.7),
                 ),
                 alignment: Alignment.center,
                 child: Column(
                   children: [
                     Container(
                       child: Image.asset(
-                        'images/login.png',
+                        'assets/images/login.png',
                         width: 200,
                       ),
                     ),
@@ -141,8 +144,7 @@ class _LoginState extends State<Login> {
                           fontSize: 20, color: Colors.white),
                     ),
                     onPressed: () {
-                      print(nameController.text);
-                      print(passwordController.text);
+                      Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.rightToLeftWithFade, child: Home()));
                     },
                     // style: ElevatedButton.styleFrom(
                     //   primary: Color(0xffEC6262), // Background color
@@ -158,6 +160,8 @@ class _LoginState extends State<Login> {
           ],
         ),
       ),
-    ));
+    )
+    
+    );
   }
 }
