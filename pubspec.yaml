@@ -25,6 +25,7 @@ dependencies:
   flutter:
     sdk: flutter
   url_launcher: ^6.0.20
+  email_validator: '^1.0.6'
   ticket_card: ^0.2.0
   dotted_line: ^3.1.0
   flutter_spinkit: ^5.1.0

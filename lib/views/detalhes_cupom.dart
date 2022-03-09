@@ -6,6 +6,7 @@ import 'package:teste/DAO/TarefaDAO.dart';
 import 'package:teste/Utils/utils.dart';
 import 'package:teste/models/Cupom.dart';
 import 'package:teste/models/Tarefa.dart';
+import 'package:teste/models/Usuario.dart';
 import 'package:teste/views/widgets/appbar.dart';
 import 'package:teste/views/widgets/cupom_dialog.dart';
 
@@ -13,7 +14,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 class DetalhesCupom extends StatefulWidget {
   
  Cupom cupom;
- DetalhesCupom(this.cupom);
+ Usuario usuario;
+ DetalhesCupom(this.cupom, this.usuario);
   @override
   State<DetalhesCupom> createState() => _DetalhesCupomState();
 }
@@ -196,7 +198,7 @@ class _DetalhesCupomState extends State<DetalhesCupom> {
                     SizedBox(height: 25,),
                     Align(
                           alignment: Alignment.centerLeft,
-                          child: Text('Conlua as tarefas para resgatar o cupom:',
+                          child: Text('Conclua as tarefas para resgatar o cupom:',
                             style: GoogleFonts.montserratAlternates(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black))
                         ),  
                         SizedBox(height: 10,),
@@ -225,7 +227,7 @@ class _DetalhesCupomState extends State<DetalhesCupom> {
                 ElevatedButton(
                           child: Text('Resgatar Cupom'),
                           onPressed: (){
-                            cupomDialog.pegarCupom(widget.cupom, context);
+                            cupomDialog.pegarCupom(widget.cupom, widget.usuario.getId.toString(), context);
                           },
                           style: ElevatedButton.styleFrom(
                               primary: Colors.red,

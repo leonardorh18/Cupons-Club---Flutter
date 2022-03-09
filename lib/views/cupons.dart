@@ -11,8 +11,10 @@ import 'package:teste/Utils/utils.dart';
 import 'package:teste/models/Tarefa.dart';
 import 'package:teste/views/detalhes_cupom.dart';
 import 'package:page_transition/page_transition.dart';
-
+import 'package:teste/models/Usuario.dart';
 class ListCupons extends StatefulWidget {
+  Usuario usuario;
+  ListCupons(this.usuario);
   @override
   _ListCuponsState createState() => _ListCuponsState();
 }
@@ -62,7 +64,7 @@ class _ListCuponsState extends State<ListCupons> {
                        Padding(padding: EdgeInsets.fromLTRB(20, 18, 10, 3),
                        child:Align(
                          alignment: Alignment.centerLeft,
-                         child:Text('Olá Fulano,',
+                         child:Text('Olá ${widget.usuario.getNome.toString()},',
                             style: GoogleFonts.montserrat(fontSize: 25, color: Colors.black)
                             )
                        ),),
@@ -100,7 +102,7 @@ class _ListCuponsState extends State<ListCupons> {
               child: InkWell( 
               onTap: () {
                 
-                 Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeftWithFade, child: DetalhesCupom(cupom)));
+                 Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeftWithFade, child: DetalhesCupom(cupom, widget.usuario)));
               },
               child: Container(
               

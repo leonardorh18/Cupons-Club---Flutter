@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:teste/views/home.dart';
+import 'dart:core';
+import 'package:teste/Utils/utils.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:teste/DAO/UsuarioDAO.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -11,8 +16,30 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  UsuarioDAO usuarioDAO = UsuarioDAO();
+  Utils utils = Utils();
+
+   validarLogin() async{
+
+    bool isValid = EmailValidator.validate(emailController.text.trim());
+    if (!isValid){
+        utils.showMessage('Digite um email valido!');
+       
+    }
+    var usuario = await usuarioDAO.login(emailController.text.trim(), passwordController.text.trim());
+    if (usuario is bool) {
+      Navigator.of(context).pop();
+      utils.showMessage('Senha ou email errados!');
+       
+    } else {
+      Navigator.of(context).pop();
+      Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.rightToLeftWithFade, child: Home(usuario )));
+    }
+   
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +90,7 @@ class _LoginState extends State<Login> {
               padding: const EdgeInsets.all(10),
               child: TextField(
                 cursorColor: Colors.black,
-                controller: nameController,
+                controller: emailController,
                 decoration: InputDecoration(
                   labelStyle: GoogleFonts.montserratAlternates(
                     color: Colors.black,
@@ -143,8 +170,10 @@ class _LoginState extends State<Login> {
                       style: GoogleFonts.montserratAlternates(
                           fontSize: 20, color: Colors.white),
                     ),
-                    onPressed: () {
-                      Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.rightToLeftWithFade, child: Home()));
+                    onPressed: () async {
+                      utils.loading(context);
+                      await validarLogin();
+                      
                     },
                     // style: ElevatedButton.styleFrom(
                     //   primary: Color(0xffEC6262), // Background color

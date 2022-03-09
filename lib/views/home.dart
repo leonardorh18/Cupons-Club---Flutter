@@ -4,26 +4,29 @@ import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:teste/views/cupons.dart';
 import 'package:teste/views/widgets/appbar.dart';
 import 'package:flutter/services.dart';
+import 'package:teste/models/Usuario.dart';
 
 class Home extends StatefulWidget {
- 
+  Usuario usuario;
+  Home(this.usuario);
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  List<Widget> telas = [
-    Container(child:Text('oi tela 2')),
-    ListCupons(),
-    Container(child:Text('oi tela 3')),
-  ];
+
+
 
   var indexTela = 1;
   CustomAppBar appBar = new CustomAppBar();
 
   @override
   Widget build(BuildContext context) {
-
+    List<Widget> telas = [
+    Container(child:Text('oi tela 2')),
+    ListCupons(widget.usuario),
+    Container(child:Text('oi tela 3')),
+  ];
     return AnnotatedRegion<SystemUiOverlayStyle>(
           value:SystemUiOverlayStyle(
           statusBarColor: Colors.red, //i like transaparent :-)

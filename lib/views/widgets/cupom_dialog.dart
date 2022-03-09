@@ -20,7 +20,7 @@ class CupomDialog{
   },
 );
   CupomDAO cupomDAO = CupomDAO();
-  pegarCupom(Cupom cupom, context) async{
+  pegarCupom(Cupom cupom, String id, context) async{
 
   
         showDialog(
@@ -40,7 +40,7 @@ class CupomDialog{
                         child: Text("Pegar cupom!"),
                         onPressed: () async{
                         utils.loading(context);
-                        var res = await cupomDAO.pegarCupom(cupom, '1');
+                        var res = await cupomDAO.pegarCupom(cupom, id);
                         Navigator.of(context).pop();
                         if (res){
                               Fluttertoast.showToast(
