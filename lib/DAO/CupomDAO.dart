@@ -4,14 +4,45 @@ import 'package:teste/DAO/EstabelecimentoDAO.dart';
 import 'package:teste/DAO/TarefaDAO.dart';
 import 'package:teste/models/Cupom.dart';
 import 'package:teste/models/Estabelecimento.dart';
+import 'package:intl/intl.dart';
 
 class CupomDAO {
 
   Conn _conn = Conn();
+  Future <bool> pegarCupom(Cupom cupom, String idUsuario) async {
+    var dbconn = await this._conn.connectDB(); 
+    try {
 
+    
+    var now = new DateTime.now();
+    var formatter = new DateFormat('yyyy-MM-dd');
+    String formattedDate = formatter.format(now);
+    print(formattedDate);
+      var result = await dbconn.query(""" 
+      insert into cupons_usados 
+      (fk_cupom_id, fk_usuario_id, data_pego, status_cupom, qr_code)
+      values
+      (${cupom.id.toString()}, ${idUsuario}, '${formattedDate}', 1, 'codigo aqui')
+      """ );
+      
+      await dbconn.close();
+     
+      return true;
+    } catch (e) {
+      await  dbconn.close();
+      print("ERRO pegar CUPON");
+      return false;
+      
+
+    }
+
+
+    }
   getCupons() async{
 
     var dbconn = await this._conn.connectDB(); 
+
+
     List <Cupom> listaCupons = [];
 
     try {

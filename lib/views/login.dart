@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:teste/views/home.dart';
+import 'dart:core';
+import 'package:teste/Utils/utils.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:teste/DAO/UsuarioDAO.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -9,16 +16,39 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  UsuarioDAO usuarioDAO = UsuarioDAO();
+  Utils utils = Utils();
+
+   validarLogin() async{
+
+    bool isValid = EmailValidator.validate(emailController.text.trim());
+    if (!isValid){
+        utils.showMessage('Digite um email valido!');
+       
+    }
+    var usuario = await usuarioDAO.login(emailController.text.trim(), passwordController.text.trim());
+    if (usuario is bool) {
+      Navigator.of(context).pop();
+      utils.showMessage('Senha ou email errados!');
+       
+    } else {
+      Navigator.of(context).pop();
+      Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.rightToLeftWithFade, child: Home(usuario )));
+    }
+   
+
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         body: Container(
       decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage('images/background.png'), // sdd
+              image: AssetImage('assets/images/background.png'), // sdd
               fit: BoxFit.cover)),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
@@ -28,24 +58,24 @@ class _LoginState extends State<Login> {
           children: <Widget>[
             Container(
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.7),
+                color: Colors.white.withOpacity(0.7),
                 ),
                 alignment: Alignment.center,
                 child: Column(
                   children: [
                     Container(
                       child: Image.asset(
-                        'images/login.png',
+                        'assets/images/login.png',
                         width: 200,
                       ),
                     ),
                     Container(
                         alignment: Alignment.center,
                         padding: const EdgeInsets.all(10),
-                        child: const Text(
+                        child: Text(
                           'Faça login para entrar no aplicativo',
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: GoogleFonts.montserratAlternates(
                             color: Colors.black,
                             fontWeight: FontWeight.w500,
                             fontSize: 30,
@@ -60,10 +90,9 @@ class _LoginState extends State<Login> {
               padding: const EdgeInsets.all(10),
               child: TextField(
                 cursorColor: Colors.black,
-                obscureText: true,
-                controller: passwordController,
+                controller: emailController,
                 decoration: InputDecoration(
-                  labelStyle: TextStyle(
+                  labelStyle: GoogleFonts.montserratAlternates(
                     color: Colors.black,
                   ),
                   focusedBorder: OutlineInputBorder(
@@ -85,7 +114,7 @@ class _LoginState extends State<Login> {
                 obscureText: true,
                 controller: passwordController,
                 decoration: InputDecoration(
-                  labelStyle: TextStyle(
+                  labelStyle: GoogleFonts.montserratAlternates(
                     color: Colors.black,
                   ),
                   focusedBorder: OutlineInputBorder(
@@ -94,22 +123,14 @@ class _LoginState extends State<Login> {
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.red, width: 2.0),
                   ),
-                  labelText: 'E-mail ou telefone',
+                  labelText: 'Senha',
                   filled: true,
                   fillColor: Colors.white,
                 ),
               ),
             ),
-            TextButton(
-              style: TextButton.styleFrom(
-                primary: Colors.black, // Text Color
-              ),
-              onPressed: () {
-                //forgot password screen
-              },
-              child: const Text(
-                'Esqueci a senha',
-              ),
+            SizedBox(
+              height: 10,
             ),
             TextButton(
               style: TextButton.styleFrom(
@@ -118,8 +139,23 @@ class _LoginState extends State<Login> {
               onPressed: () {
                 //forgot password screen
               },
-              child: const Text(
+              child: Text(
+                'Esqueci a senha',
+                style: GoogleFonts.montserratAlternates(
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                primary: Colors.black,
+              ),
+              onPressed: () {
+                //forgot password screen
+              },
+              child: Text(
                 'Criar conta',
+                style: GoogleFonts.montserratAlternates(
+                    fontWeight: FontWeight.bold),
               ),
             ),
             Padding(
@@ -134,18 +170,27 @@ class _LoginState extends State<Login> {
                       style: GoogleFonts.montserratAlternates(
                           fontSize: 20, color: Colors.white),
                     ),
-                    onPressed: () {
-                      print(nameController.text);
-                      print(passwordController.text);
+                    onPressed: () async {
+                      utils.loading(context);
+                      await validarLogin();
+                      
                     },
+                    // style: ElevatedButton.styleFrom(
+                    //   primary: Color(0xffEC6262), // Background color
+                    // ),
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xffEC6262), // Background color
+                      primary: Color(0xffEC6262),
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(30.0),
+                      ),
                     ),
                   )),
             )
           ],
         ),
       ),
-    ));
+    )
+    
+    );
   }
 }
