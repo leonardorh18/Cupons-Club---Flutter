@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
+import 'package:teste/DAO/UsuarioDAO.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:teste/Utils/utils.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'dart:core';
 
 class Cadastro extends StatefulWidget {
   const Cadastro({Key? key}) : super(key: key);
@@ -10,22 +15,57 @@ class Cadastro extends StatefulWidget {
 }
 
 class _CadastroState extends State<Cadastro> {
+  var phoneMask = new MaskTextInputFormatter(
+      //Máscara de Formatação
+      mask: '+## (##) #####-####',
+      filter: {"#": RegExp(r'[0-9]')},
+      type: MaskAutoCompletionType.lazy);
+
   TextEditingController nameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  UsuarioDAO usuarioDAO = UsuarioDAO();
+  Utils utils = Utils();
+
+  validarSignin() async {
+    int alright = 1;
+    if (nameController.text.length > 0 || passwordController.text.length > 0 || emailController.text.length > 0) {
+      
+      EmailValidator.validate(emailController.text.trim()) ? print('O email é válido') : utils.showMessage('Digite um e-mail válido!'); 
+      phoneMask.getUnmaskedText().length > 8 ? alright++ : utils.showMessage('O telefone deve ser preenchido corretamente!');
+      nameController.text.length > 3 ? alright++ : utils.showMessage('O nome deve ter mais que 3 caracteres!');
+      passwordController.text.length > 6 ? alright++ : utils.showMessage('A senha deve ter mais que 6 caracteres!');
+
+      //checa se o usuário possui telefone ou email já cadastrado no banco
+      if (await usuarioDAO.checkBD(emailController.text.trim(), phoneMask.getUnmaskedText().trim()) == false) { 
+        Navigator.of(context).pop();
+        utils.showMessage('Telefone ou E-mail já cadastrado, tente outros!'); //ver se algum deles já existem no banco
+        alright = 1; // not alright 
+      }
+    }
+    else {
+      utils.showMessage('Preencha todos os campos!');
+    }
+
+    if (alright == 4) {
+      utils.showMessage('Podemos criar a conta');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent, //i like transaparent :-)
-          systemNavigationBarColor: Colors.white, // navigation bar color
+          statusBarColor: Colors.transparent, //cor da barra de notificação
+          systemNavigationBarColor: Colors.white, //cor da barra de baixo
           statusBarIconBrightness: Brightness.dark, // status bar icons' color
           systemNavigationBarIconBrightness:
               Brightness.dark, //navigation bar icons' color
         ),
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
           body: Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
@@ -72,6 +112,10 @@ class _CadastroState extends State<Cadastro> {
                         child: TextField(
                           cursorColor: Colors.black,
                           controller: nameController,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                                RegExp('[a-z A-Z]')),
+                          ],
                           decoration: InputDecoration(
                             labelStyle: TextStyle(
                               color: Colors.black,
@@ -143,6 +187,7 @@ class _CadastroState extends State<Cadastro> {
                       Container(
                         padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                         child: TextField(
+                          inputFormatters: [phoneMask],
                           cursorColor: Colors.black,
                           controller: phoneController,
                           decoration: InputDecoration(
@@ -177,17 +222,21 @@ class _CadastroState extends State<Cadastro> {
                                     style: GoogleFonts.montserratAlternates(
                                         fontSize: 20, color: Colors.white),
                                   ),
-                                  onPressed: () {
+                                  onPressed: () async {
+                                    utils.loading(context);
+                                    await validarSignin();
+
                                     print(nameController.text);
                                     print(passwordController.text);
                                     print(phoneController.text);
                                     print(emailController.text);
                                   },
                                   style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all<Color>(Color(0xffEC6262)),
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Color(0xffEC6262)),
                                     shape: MaterialStateProperty.all(
                                       RoundedRectangleBorder(
-                                        // Change your radius here
                                         borderRadius: BorderRadius.circular(36),
                                       ),
                                     ),
