@@ -11,6 +11,9 @@ class Home extends StatefulWidget {
   Usuario usuario;
   Home(this.usuario);
 
+    @override
+  State<Home> createState() => _HomeState();
+}
 class _HomeState extends State<Home> {
   var indexTela = 1;
   CustomAppBar appBar = new CustomAppBar();
@@ -30,7 +33,7 @@ class _HomeState extends State<Home> {
           systemNavigationBarIconBrightness:Brightness.dark, //navigation bar icons' color
     ), 
     child: Scaffold(
-      appBar: appBar.buildAppBar() ,
+      appBar: appBar.buildAppBar(context) ,
 
       body: telas[indexTela],
 

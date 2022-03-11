@@ -20,11 +20,11 @@ class Utils {
   
   }
 
-  showMessage(String message) {
+  showMessageUp(String message) {
         Fluttertoast.showToast(
           msg: message,
           toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
+          gravity: ToastGravity.TOP,
           backgroundColor: Colors.red,
           textColor: Colors.white,
           timeInSecForIos: 10,

@@ -7,7 +7,8 @@ import 'package:teste/Utils/utils.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:teste/DAO/UsuarioDAO.dart';
-
+import 'package:teste/views/signin.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
 
@@ -20,22 +21,33 @@ class _LoginState extends State<Login> {
   TextEditingController passwordController = TextEditingController();
   UsuarioDAO usuarioDAO = UsuarioDAO();
   Utils utils = Utils();
+  bool _passwordVisible = true;
 
    validarLogin() async{
 
     bool isValid = EmailValidator.validate(emailController.text.trim());
     if (!isValid){
-        utils.showMessage('Digite um email valido!');
-       
-    }
-    var usuario = await usuarioDAO.login(emailController.text.trim(), passwordController.text.trim());
-    if (usuario is bool) {
-      Navigator.of(context).pop();
-      utils.showMessage('Senha ou email errados!');
+        Navigator.of(context).pop();
+        utils.showMessageUp('Digite um email valido!');
        
     } else {
-      Navigator.of(context).pop();
-      Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.rightToLeftWithFade, child: Home(usuario )));
+      var usuario = await usuarioDAO.login(emailController.text.trim(), passwordController.text.trim());
+      if (usuario is bool) {
+        Navigator.of(context).pop();
+        utils.showMessageUp('Senha ou email errados!');
+        
+      } else {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('nome', usuario.getNome.toString());
+        await prefs.setString('email', usuario.getEmail.toString());
+        await prefs.setString('senha', usuario.getSenha.toString());
+        await prefs.setString('telefone', usuario.getTelefone.toString());
+        await prefs.setString('id', usuario.getId.toString());
+        await prefs.setBool('logado', true);
+        print('NOMEEEEEEEE' + prefs.getString('nome').toString());
+        Navigator.of(context).pop();
+        Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.rightToLeftWithFade, child: Home(usuario )));
+      }
     }
    
 
@@ -111,7 +123,7 @@ class _LoginState extends State<Login> {
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: TextField(
                 cursorColor: Colors.black,
-                obscureText: true,
+                obscureText: _passwordVisible,
                 controller: passwordController,
                 decoration: InputDecoration(
                   labelStyle: GoogleFonts.montserratAlternates(
@@ -124,6 +136,18 @@ class _LoginState extends State<Login> {
                     borderSide: BorderSide(color: Colors.red, width: 2.0),
                   ),
                   labelText: 'Senha',
+                  suffixIcon: IconButton(
+                    color: Colors.red,
+                        icon: Icon(
+                          _passwordVisible ? Icons.visibility : Icons.visibility_off,
+                          ),
+                        onPressed: () {
+                          
+                          setState(() {
+                              _passwordVisible = !_passwordVisible;
+                          });
+                        },
+                  ),
                   filled: true,
                   fillColor: Colors.white,
                 ),
@@ -150,7 +174,7 @@ class _LoginState extends State<Login> {
                 primary: Colors.black,
               ),
               onPressed: () {
-                //forgot password screen
+                Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeftWithFade, child: Cadastro()));
               },
               child: Text(
                 'Criar conta',

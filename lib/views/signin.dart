@@ -26,6 +26,7 @@ class _CadastroState extends State<Cadastro> {
               Brightness.dark, //navigation bar icons' color
         ),
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
           body: Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
