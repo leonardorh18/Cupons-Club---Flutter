@@ -5,10 +5,11 @@ import 'package:teste/views/home.dart';
 import 'dart:core';
 import 'package:teste/Utils/utils.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:teste/DAO/UsuarioDAO.dart';
 import 'package:teste/views/signin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart';
+
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
 
@@ -23,8 +24,7 @@ class _LoginState extends State<Login> {
   Utils utils = Utils();
   bool _passwordVisible = true;
 
-   validarLogin() async{
-
+  validarLogin() async {
     bool isValid = EmailValidator.validate(emailController.text.trim());
     if (!isValid){
         Navigator.of(context).pop();
@@ -48,53 +48,112 @@ class _LoginState extends State<Login> {
         Navigator.of(context).pop();
         Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.rightToLeftWithFade, child: Home(usuario )));
       }
-    }
-   
 
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-        body: Container(
-      decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('assets/images/background.png'), // sdd
-              fit: BoxFit.cover)),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-                decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.7),
-                ),
-                alignment: Alignment.center,
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent, //i like transaparent :-)
+          systemNavigationBarColor: Colors.white, // navigation bar color
+          statusBarIconBrightness: Brightness.dark, // status bar icons' color
+          systemNavigationBarIconBrightness:
+              Brightness.dark, //navigation bar icons' color
+        ),
+        child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            body: Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('assets/images/background.png'),
+                      fit: BoxFit.cover)),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: Column(
-                  children: [
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
                     Container(
-                      child: Image.asset(
-                        'assets/images/login.png',
-                        width: 200,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.7),
+                        ),
+                        alignment: Alignment.center,
+                        child: Column(
+                          children: [
+                            Container(
+                              child: Image.asset(
+                                'assets/images/Logo.png',
+                                width: 200,
+                              ),
+                            ),
+                            Container(
+                                alignment: Alignment.center,
+                                padding: const EdgeInsets.all(10),
+                                child: Text(
+                                  'Faça login para entrar no aplicativo',
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.montserratAlternates(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 30,
+                                  ),
+                                )),
+                            SizedBox(
+                              height: 20,
+                            ),
+                          ],
+                        )),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      child: TextField(
+                        cursorColor: Colors.black,
+                        controller: emailController,
+                        decoration: InputDecoration(
+                          labelStyle: GoogleFonts.montserratAlternates(
+                            color: Colors.black,
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.red, width: 2.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.red, width: 2.0),
+                          ),
+                          labelText: 'E-mail ou telefone',
+                          filled: true,
+                          fillColor: Colors.white,
+                        ),
                       ),
                     ),
                     Container(
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.all(10),
-                        child: Text(
-                          'Faça login para entrar no aplicativo',
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.montserratAlternates(
+                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                      child: TextField(
+                        cursorColor: Colors.black,
+                        obscureText: true,
+                        controller: passwordController,
+                        decoration: InputDecoration(
+                          labelStyle: GoogleFonts.montserratAlternates(
                             color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 30,
                           ),
-                        )),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.red, width: 2.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.red, width: 2.0),
+                          ),
+                          labelText: 'Senha',
+                          filled: true,
+                          fillColor: Colors.white,
+                        ),
+                      ),
+                    ),
                     SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                   ],
                 )),
@@ -194,27 +253,53 @@ class _LoginState extends State<Login> {
                       style: GoogleFonts.montserratAlternates(
                           fontSize: 20, color: Colors.white),
                     ),
-                    onPressed: () async {
-                      utils.loading(context);
-                      await validarLogin();
-                      
-                    },
-                    // style: ElevatedButton.styleFrom(
-                    //   primary: Color(0xffEC6262), // Background color
-                    // ),
-                    style: ElevatedButton.styleFrom(
-                      primary: Color(0xffEC6262),
-                      shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(30.0),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        primary: Colors.black,
+                      ),
+                      onPressed: () async {
+                        //ir para a tela de Cadastro
+
+                        Navigator.of(context).pop();
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                                type: PageTransitionType.rightToLeftWithFade,
+                                child: Cadastro()));
+                      },
+                      child: Text(
+                        'Criar minha conta',
+                        style: GoogleFonts.montserratAlternates(
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
-                  )),
-            )
-          ],
-        ),
-      ),
-    )
-    
-    );
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
+                      child: Container(
+                          height: 50,
+                          width: 300,
+                          padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                          child: ElevatedButton(
+                            child: Text(
+                              'Entrar',
+                              style: GoogleFonts.montserratAlternates(
+                                  fontSize: 20, color: Colors.white),
+                            ),
+                            onPressed: () async {
+                              utils.loading(context);
+                              await validarLogin();
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(0xffEC6262),
+                              shape: new RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(30.0),
+                              ),
+                            ),
+                          )),
+                    )
+                  ],
+                ),
+              ),
+            )));
   }
 }
