@@ -49,7 +49,7 @@ class _DetalhesCupomState extends State<DetalhesCupom> {
   }
   Widget build(BuildContext context) {
     return carregandoTarefas ? spinkit : Scaffold(
-      appBar:appBar.buildAppBar(),
+      appBar:appBar.buildAppBar(context),
       body: SingleChildScrollView(child: Padding( 
           padding: EdgeInsets.fromLTRB(15, 15, 15, 10),
           child: Column(

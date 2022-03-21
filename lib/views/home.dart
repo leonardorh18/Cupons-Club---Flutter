@@ -14,6 +14,9 @@ class Home extends StatefulWidget {
     _HomeState createState() => _HomeState();
   }
 
+    @override
+  State<Home> createState() => _HomeState();
+}
 class _HomeState extends State<Home> {
   var indexTela = 1;
   CustomAppBar appBar = new CustomAppBar();
@@ -26,12 +29,40 @@ class _HomeState extends State<Home> {
       Container(child: Text('oi tela 3')),
     ];
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
-        statusBarColor: Colors.red, //i like transaparent :-)
-        systemNavigationBarColor: Colors.white, // navigation bar color
-        statusBarIconBrightness: Brightness.dark, // status bar icons' color
-        systemNavigationBarIconBrightness:
-            Brightness.dark, //navigation bar icons' color
+          value:SystemUiOverlayStyle(
+          statusBarColor: Colors.red, //i like transaparent :-)
+          systemNavigationBarColor: Colors.white, // navigation bar color
+          statusBarIconBrightness: Brightness.dark, // status bar icons' color
+          systemNavigationBarIconBrightness:Brightness.dark, //navigation bar icons' color
+    ), 
+    child: Scaffold(
+      appBar: appBar.buildAppBar(context) ,
+
+      body: telas[indexTela],
+
+      bottomNavigationBar: SalomonBottomBar(
+          currentIndex: indexTela,
+          onTap: (i) => setState(() => indexTela = i),
+          items: [
+
+
+            SalomonBottomBarItem(
+              icon: Icon(Icons.favorite),
+              title: Text("Fidelidade"),
+              selectedColor: Colors.pink,
+            ),
+            SalomonBottomBarItem(
+              icon: FaIcon(FontAwesomeIcons.ticketAlt),
+              title: Text("Cupons"),
+              selectedColor: Colors.red[400],
+            ),
+              SalomonBottomBarItem(
+              icon: FaIcon(FontAwesomeIcons.history),
+              title: Text("Histórico"),
+              selectedColor: Colors.pink,
+            ),
+
+          ]
       ),
       child: Scaffold(
         appBar: appBar.buildAppBar(),
