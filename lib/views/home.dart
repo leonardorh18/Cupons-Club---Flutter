@@ -9,12 +9,8 @@ import 'package:teste/models/Usuario.dart';
 class Home extends StatefulWidget {
   Usuario usuario;
   Home(this.usuario);
-  
-  @override
-    _HomeState createState() => _HomeState();
-  }
 
-    @override
+  @override
   State<Home> createState() => _HomeState();
 }
 class _HomeState extends State<Home> {
@@ -44,8 +40,6 @@ class _HomeState extends State<Home> {
           currentIndex: indexTela,
           onTap: (i) => setState(() => indexTela = i),
           items: [
-
-
             SalomonBottomBarItem(
               icon: Icon(Icons.favorite),
               title: Text("Fidelidade"),
@@ -64,29 +58,6 @@ class _HomeState extends State<Home> {
 
           ]
       ),
-      child: Scaffold(
-        appBar: appBar.buildAppBar(),
-        body: telas[indexTela],
-        bottomNavigationBar: SalomonBottomBar(
-            currentIndex: indexTela,
-            onTap: (i) => setState(() => indexTela = i),
-            items: [
-              SalomonBottomBarItem(
-                icon: Icon(Icons.favorite),
-                title: Text("Fidelidade"),
-                selectedColor: Colors.red[400],
-              ),
-              SalomonBottomBarItem(
-                icon: FaIcon(FontAwesomeIcons.ticketAlt),
-                title: Text("Cupons"),
-                selectedColor: Colors.red[400],
-              ),
-              SalomonBottomBarItem(
-                icon: FaIcon(FontAwesomeIcons.history),
-                title: Text("Histórico"),
-                selectedColor: Colors.red[400],
-              ),
-            ]),
       ),
     );
   }

@@ -29,21 +29,29 @@ class UsuarioDAO {
   Future<dynamic> checkBD(String email, String phone) async {
     var dbconn = await this._conn.connectDB();
     try {
-      var results = await dbconn.query(""" select * from usuario where email = '$email' or telefone = '$phone' """);
+      var results = await dbconn.query(""" select * from usuario where email = '$email' or telefone = '$phone'; """);
       await dbconn.close();
-      print('Encontrado: ' + results.length.toString());
       if (results.length >= 1) {
-        // for (var row in results) {
-        //   Usuario usuario = Usuario(row['id'], row['nome'], row['email'],
-        //       row['telefone'], row['senha']);
           return false; //não pode criar
-        //}
       } else {
         return true; //pode criar
       }
     } catch (e) {
       await dbconn.close();
-      print("ERRO AO FAZER LOGIN " + e.toString());
+      print("ERRO AO FAZER A CHECAGEM " + e.toString());
+      return false;
+    }
+  }
+
+  Future<dynamic> signin(String email, String phone, String name, String password) async {
+    var dbconn = await this._conn.connectDB();
+    try {
+      var registrado = await dbconn.query(""" INSERT INTO usuario (nome, email, telefone, senha) VALUES ('$name', '$email', '$phone', '$password'); """);
+      await dbconn.close();
+      print(registrado);
+    } catch (e) {
+      await dbconn.close();
+      print("ERRO AO FAZER O CADASTRO " + e.toString());
       return false;
     }
   }

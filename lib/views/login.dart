@@ -26,16 +26,15 @@ class _LoginState extends State<Login> {
 
   validarLogin() async {
     bool isValid = EmailValidator.validate(emailController.text.trim());
-    if (!isValid){
-        Navigator.of(context).pop();
-        utils.showMessageUp('Digite um email valido!');
-       
+    if (!isValid) {
+      Navigator.of(context).pop();
+      utils.showMessageUp('Digite um email valido!');
     } else {
-      var usuario = await usuarioDAO.login(emailController.text.trim(), passwordController.text.trim());
+      var usuario = await usuarioDAO.login(
+          emailController.text.trim(), passwordController.text.trim());
       if (usuario is bool) {
         Navigator.of(context).pop();
         utils.showMessageUp('Senha ou email errados!');
-        
       } else {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('nome', usuario.getNome.toString());
@@ -46,9 +45,12 @@ class _LoginState extends State<Login> {
         await prefs.setBool('logado', true);
         print('NOMEEEEEEEE' + prefs.getString('nome').toString());
         Navigator.of(context).pop();
-        Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.rightToLeftWithFade, child: Home(usuario )));
+        Navigator.pushReplacement(
+            context,
+            PageTransition(
+                type: PageTransitionType.rightToLeftWithFade,
+                child: Home(usuario)));
       }
-
     }
   }
 
@@ -132,7 +134,7 @@ class _LoginState extends State<Login> {
                       padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                       child: TextField(
                         cursorColor: Colors.black,
-                        obscureText: true,
+                        obscureText: _passwordVisible,
                         controller: passwordController,
                         decoration: InputDecoration(
                           labelStyle: GoogleFonts.montserratAlternates(
@@ -147,6 +149,19 @@ class _LoginState extends State<Login> {
                                 BorderSide(color: Colors.red, width: 2.0),
                           ),
                           labelText: 'Senha',
+                          suffixIcon: IconButton(
+                            color: Colors.red,
+                            icon: Icon(
+                              _passwordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _passwordVisible = !_passwordVisible;
+                              });
+                            },
+                          ),
                           filled: true,
                           fillColor: Colors.white,
                         ),
@@ -155,103 +170,18 @@ class _LoginState extends State<Login> {
                     SizedBox(
                       height: 10,
                     ),
-                  ],
-                )),
-            Container(
-              padding: const EdgeInsets.all(10),
-              child: TextField(
-                cursorColor: Colors.black,
-                controller: emailController,
-                decoration: InputDecoration(
-                  labelStyle: GoogleFonts.montserratAlternates(
-                    color: Colors.black,
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.red, width: 2.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.red, width: 2.0),
-                  ),
-                  labelText: 'E-mail ou telefone',
-                  filled: true,
-                  fillColor: Colors.white,
-                ),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
-                cursorColor: Colors.black,
-                obscureText: _passwordVisible,
-                controller: passwordController,
-                decoration: InputDecoration(
-                  labelStyle: GoogleFonts.montserratAlternates(
-                    color: Colors.black,
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.red, width: 2.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.red, width: 2.0),
-                  ),
-                  labelText: 'Senha',
-                  suffixIcon: IconButton(
-                    color: Colors.red,
-                        icon: Icon(
-                          _passwordVisible ? Icons.visibility : Icons.visibility_off,
-                          ),
-                        onPressed: () {
-                          
-                          setState(() {
-                              _passwordVisible = !_passwordVisible;
-                          });
-                        },
-                  ),
-                  filled: true,
-                  fillColor: Colors.white,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-                primary: Colors.black, // Text Color
-              ),
-              onPressed: () {
-                //forgot password screen
-              },
-              child: Text(
-                'Esqueci a senha',
-                style: GoogleFonts.montserratAlternates(
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-                primary: Colors.black,
-              ),
-              onPressed: () {
-                Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeftWithFade, child: Cadastro()));
-              },
-              child: Text(
-                'Criar conta',
-                style: GoogleFonts.montserratAlternates(
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
-              child: Container(
-                  height: 50,
-                  width: 300,
-                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  child: ElevatedButton(
-                    child: Text(
-                      'Entrar',
-                      style: GoogleFonts.montserratAlternates(
-                          fontSize: 20, color: Colors.white),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        primary: Colors.black, // Text Color
+                      ),
+                      onPressed: () {
+                        //forgot password screen
+                      },
+                      child: Text(
+                        'Esqueci a senha',
+                        style: GoogleFonts.montserratAlternates(
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
                     TextButton(
                       style: TextButton.styleFrom(

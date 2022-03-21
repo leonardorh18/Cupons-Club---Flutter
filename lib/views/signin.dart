@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:teste/views/home.dart';
 import 'package:teste/DAO/UsuarioDAO.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:teste/Utils/utils.dart';
@@ -15,16 +18,17 @@ class Cadastro extends StatefulWidget {
 }
 
 class _CadastroState extends State<Cadastro> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   var phoneMask = new MaskTextInputFormatter(
       //Máscara de Formatação
       mask: '+## (##) #####-####',
       filter: {"#": RegExp(r'[0-9]')},
       type: MaskAutoCompletionType.lazy);
 
-  TextEditingController nameController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
 
   UsuarioDAO usuarioDAO = UsuarioDAO();
   Utils utils = Utils();
@@ -32,27 +36,48 @@ class _CadastroState extends State<Cadastro> {
   validarSignin() async {
     int alright = 1;
     if (nameController.text.length > 0 || passwordController.text.length > 0 || emailController.text.length > 0) {
-      
-      EmailValidator.validate(emailController.text.trim()) ? print('O email é válido') : utils.showMessage('Digite um e-mail válido!'); 
-      phoneMask.getUnmaskedText().length > 8 ? alright++ : utils.showMessage('O telefone deve ser preenchido corretamente!');
-      nameController.text.length > 3 ? alright++ : utils.showMessage('O nome deve ter mais que 3 caracteres!');
-      passwordController.text.length > 6 ? alright++ : utils.showMessage('A senha deve ter mais que 6 caracteres!');
+      EmailValidator.validate(emailController.text.trim()) ? print('O email é válido') : utils.showMessageUp('Digite um e-mail válido!'); 
+      phoneMask.getUnmaskedText().length > 8 ? alright++ : utils.showMessageUp('O telefone deve ser preenchido corretamente!');
+      nameController.text.length > 3 ? alright++ : utils.showMessageUp('O nome deve ter mais que 3 caracteres!');
+      passwordController.text.length > 6 ? alright++ : utils.showMessageUp('A senha deve ter mais que 6 caracteres!');
 
       //checa se o usuário possui telefone ou email já cadastrado no banco
       if (await usuarioDAO.checkBD(emailController.text.trim(), phoneMask.getUnmaskedText().trim()) == false) { 
         Navigator.of(context).pop();
-        utils.showMessage('Telefone ou E-mail já cadastrado, tente outros!'); //ver se algum deles já existem no banco
+        utils.showMessageUp('Telefone ou E-mail já cadastrado, tente outros!'); //ver se algum deles já existem no banco
         alright = 1; // not alright 
       }
     }
     else {
-      utils.showMessage('Preencha todos os campos!');
+      utils.showMessageUp('Preencha todos os campos!');
     }
-
+    print(alright);
     if (alright == 4) {
-      utils.showMessage('Podemos criar a conta');
+      print(emailController.text);
+      print(phoneMask.getUnmaskedText().toString().trim());
+      print(nameController.text);
+      print(passwordController.text);
+      await usuarioDAO.signin(emailController.text, phoneMask.getUnmaskedText().toString().trim(), nameController.text, passwordController.text);
+      var usuario = await usuarioDAO.login(emailController.text.trim(), passwordController.text.trim());
+
+      final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('nome', usuario.getNome.toString());
+        await prefs.setString('email', usuario.getEmail.toString());
+        await prefs.setString('senha', usuario.getSenha.toString());
+        await prefs.setString('telefone', usuario.getTelefone.toString());
+        await prefs.setString('id', usuario.getId.toString());
+        await prefs.setBool('logado', true);
+        
+
+      Navigator.of(context).pop();
+        Navigator.pushReplacement(
+            context,
+            PageTransition(
+                type: PageTransitionType.rightToLeftWithFade,
+                child: Home(usuario)));
+      }
     }
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -223,13 +248,13 @@ class _CadastroState extends State<Cadastro> {
                                         fontSize: 20, color: Colors.white),
                                   ),
                                   onPressed: () async {
-                                    utils.loading(context);
-                                    await validarSignin();
-
                                     print(nameController.text);
                                     print(passwordController.text);
                                     print(phoneController.text);
                                     print(emailController.text);
+                                    
+                                    utils.loading(context);
+                                    await validarSignin();
                                   },
                                   style: ButtonStyle(
                                     backgroundColor:
