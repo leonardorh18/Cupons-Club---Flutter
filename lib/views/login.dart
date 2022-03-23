@@ -180,7 +180,9 @@ class _LoginState extends State<Login> {
                       child: Text(
                         'Esqueci a senha',
                         style: GoogleFonts.montserratAlternates(
-                            fontWeight: FontWeight.bold),
+                            fontWeight: FontWeight.bold,
+                            backgroundColor: Colors.white
+                            ),
                       ),
                     ),
                     TextButton(
@@ -190,7 +192,7 @@ class _LoginState extends State<Login> {
                       onPressed: () async {
                         //ir para a tela de Cadastro
 
-                        Navigator.of(context).pop();
+                        //Navigator.of(context).pop();
                         Navigator.push(
                             context,
                             PageTransition(
@@ -200,7 +202,9 @@ class _LoginState extends State<Login> {
                       child: Text(
                         'Criar minha conta',
                         style: GoogleFonts.montserratAlternates(
-                            fontWeight: FontWeight.bold),
+                            fontWeight: FontWeight.bold,
+                            backgroundColor: Colors.white
+                            ),
                       ),
                     ),
                     Padding(

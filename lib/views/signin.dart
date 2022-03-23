@@ -25,7 +25,7 @@ class _CadastroState extends State<Cadastro> {
 
   var phoneMask = new MaskTextInputFormatter(
       //Máscara de Formatação
-      mask: '+## (##) #####-####',
+      mask: '+55 (##) #####-####',
       filter: {"#": RegExp(r'[0-9]')},
       type: MaskAutoCompletionType.lazy);
 
@@ -43,13 +43,14 @@ class _CadastroState extends State<Cadastro> {
 
       //checa se o usuário possui telefone ou email já cadastrado no banco
       if (await usuarioDAO.checkBD(emailController.text.trim(), phoneMask.getUnmaskedText().trim()) == false) { 
-        Navigator.of(context).pop();
         utils.showMessageUp('Telefone ou E-mail já cadastrado, tente outros!'); //ver se algum deles já existem no banco
         alright = 1; // not alright 
       }
+      Navigator.of(context).pop();
     }
     else {
       utils.showMessageUp('Preencha todos os campos!');
+      Navigator.of(context).pop();
     }
     print(alright);
     if (alright == 4) {
@@ -91,8 +92,9 @@ class _CadastroState extends State<Cadastro> {
         ),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          body: Container(
-            decoration: BoxDecoration(
+          body: SingleChildScrollView( child: Container (
+                height: MediaQuery.of(context).size.height,
+                decoration: BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage('assets/images/background.png'), // sdd
                     fit: BoxFit.cover)),
@@ -270,6 +272,6 @@ class _CadastroState extends State<Cadastro> {
                       ),
                     ])),
           ),
-        ));
+        )));
   }
 }

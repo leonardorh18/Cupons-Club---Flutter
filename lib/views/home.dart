@@ -20,13 +20,13 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     List<Widget> telas = [
-      Container(child: Text('oi tela 2')),
+      Container(child: Text('Implementações para uma versão futura!')),
       ListCupons(widget.usuario),
       Container(child: Text('oi tela 3')),
     ];
     return AnnotatedRegion<SystemUiOverlayStyle>(
           value:SystemUiOverlayStyle(
-          statusBarColor: Colors.red, //i like transaparent :-)
+          statusBarColor: Colors.transparent, //i like transaparent :-)
           systemNavigationBarColor: Colors.white, // navigation bar color
           statusBarIconBrightness: Brightness.dark, // status bar icons' color
           systemNavigationBarIconBrightness:Brightness.dark, //navigation bar icons' color
@@ -43,17 +43,17 @@ class _HomeState extends State<Home> {
             SalomonBottomBarItem(
               icon: Icon(Icons.favorite),
               title: Text("Fidelidade"),
-              selectedColor: Colors.pink,
+              selectedColor: Colors.red,
             ),
             SalomonBottomBarItem(
               icon: FaIcon(FontAwesomeIcons.ticketAlt),
               title: Text("Cupons"),
-              selectedColor: Colors.red[400],
+              selectedColor: Colors.red,
             ),
               SalomonBottomBarItem(
               icon: FaIcon(FontAwesomeIcons.history),
               title: Text("Histórico"),
-              selectedColor: Colors.pink,
+              selectedColor: Colors.red,
             ),
 
           ]
