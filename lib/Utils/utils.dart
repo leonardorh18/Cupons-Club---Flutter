@@ -39,7 +39,7 @@ class Utils {
   }
 
   Future<void> openPhone(String phone) async {
-    String phoneLaunch = 'tel:' + '5549998040163';
+    String phoneLaunch = 'tel:' + phone;
     if (await canLaunch(phoneLaunch)) {
       await launch(phoneLaunch);
     } else {
