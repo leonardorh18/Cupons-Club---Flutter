@@ -10,33 +10,55 @@ class CupomDAO {
 
   Conn _conn = Conn();
   Future <bool> pegarCupom(Cupom cupom, String idUsuario) async {
-    var dbconn = await this._conn.connectDB(); 
-    try {
+            var dbconn = await this._conn.connectDB(); 
+            try {
 
-    
-    var now = new DateTime.now();
-    var formatter = new DateFormat('yyyy-MM-dd');
-    String formattedDate = formatter.format(now);
-    print(formattedDate);
-      var result = await dbconn.query(""" 
-      insert into cupons_usados 
-      (fk_cupom_id, fk_usuario_id, data_pego, status_cupom, qr_code)
-      values
-      (${cupom.id.toString()}, ${idUsuario}, '${formattedDate}', 1, 'codigo aqui')
-      """ );
-      
-      await dbconn.close();
-     
-      return true;
-    } catch (e) {
-      await  dbconn.close();
-      print("ERRO pegar CUPON");
-      return false;
-      
+            
+                var now = new DateTime.now();
+                var formatter = new DateFormat('yyyy-MM-dd');
+                String formattedDate = formatter.format(now);
+                print(formattedDate);
+                  var result = await dbconn.query(""" 
+                  insert into cupons_usados 
+                  (fk_cupom_id, fk_usuario_id, data_pego, status_cupom, qr_code)
+                  values
+                  (${cupom.id.toString()}, ${idUsuario}, '${formattedDate}', 1, 'codigo aqui')
+                  """ );
+                  
+                  await dbconn.close();
+                
+                  return true;
+            } catch (e) {
+                await  dbconn.close();
+                print("ERRO pegar CUPON");
+                return false;
+                
+
+            }
+
 
     }
+    Future<bool> cupomResgatado(idCupom, idUser) async{
+        var dbconn = await this._conn.connectDB(); 
+        try{
 
+           var result = await dbconn.query("select * from cupons_usados where fk_cupom_id = $idCupom and fk_usuario_id = $idUser ");
+            await  dbconn.close();
+           if (result.length > 0){
+             return true;
+           } else {
+             return false;
 
+           }
+         
+
+        }catch(e){
+          await  dbconn.close();
+          print("ERRO AO VERIFICAR RESGATE"+e.toString());
+          return false;
+        }
+
+      
     }
   getCupons() async{
 

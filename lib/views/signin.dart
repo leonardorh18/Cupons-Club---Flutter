@@ -91,8 +91,9 @@ class _CadastroState extends State<Cadastro> {
               Brightness.dark, //navigation bar icons' color
         ),
         child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          body: SingleChildScrollView( child: Container (
+          resizeToAvoidBottomInset: true,
+          body: SingleChildScrollView( 
+                child: Container (
                 height: MediaQuery.of(context).size.height,
                 decoration: BoxDecoration(
                 image: DecorationImage(
