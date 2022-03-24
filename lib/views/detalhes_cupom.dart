@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:teste/DAO/CupomDAO.dart';
 import 'package:teste/DAO/TarefaDAO.dart';
 import 'package:teste/Utils/utils.dart';
 import 'package:teste/models/Cupom.dart';
@@ -23,8 +24,10 @@ class DetalhesCupom extends StatefulWidget {
 class _DetalhesCupomState extends State<DetalhesCupom> {
   CustomAppBar appBar = new CustomAppBar();
   bool carregandoTarefas = true;
+  bool resgatado = false;
   Utils utils = Utils();
   TarefaDAO tarefaDAO = TarefaDAO();
+  CupomDAO cupomDAO = CupomDAO();
   CupomDialog cupomDialog = CupomDialog();
     final spinkit = SpinKitFoldingCube(
       itemBuilder: (BuildContext context, int index) {
@@ -35,9 +38,15 @@ class _DetalhesCupomState extends State<DetalhesCupom> {
         );
       },
     );
+  void resgatadoState(bool value){
+    setState(() {
+      resgatado = value;
+    });
+  }
   void buscarTarefas(cupom) async{
 
     cupom.setListaTarefas = await tarefaDAO.getTarefasByCupomId(cupom.id.toString());
+    resgatado = await cupomDAO.cupomResgatado(cupom.id.toString(), widget.usuario.getId.toString());
     setState((){
       carregandoTarefas = false;
     });
@@ -224,10 +233,10 @@ class _DetalhesCupomState extends State<DetalhesCupom> {
                     ),
 
                      SizedBox(height: 40,),
-                ElevatedButton(
+                resgatado? Text('Cupom ja foi resgatado!'):ElevatedButton(
                           child: Text('Resgatar Cupom'),
-                          onPressed: (){
-                            cupomDialog.pegarCupom(widget.cupom, widget.usuario.getId.toString(), context);
+                          onPressed: () async {
+                            await cupomDialog.pegarCupom(widget.cupom, widget.usuario.getId.toString(), resgatadoState, context);
                           },
                           style: ElevatedButton.styleFrom(
                               primary: Colors.red,

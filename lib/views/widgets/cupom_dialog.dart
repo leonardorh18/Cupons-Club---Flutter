@@ -20,7 +20,7 @@ class CupomDialog{
   },
 );
   CupomDAO cupomDAO = CupomDAO();
-  pegarCupom(Cupom cupom, String id, context) async{
+  pegarCupom(Cupom cupom, String id, update, context) async{
 
   
         showDialog(
@@ -51,6 +51,7 @@ class CupomDialog{
                                   textColor: Colors.white,
                                   fontSize: 16.0
                               );
+                              update(true);
                         }else{
                                    Fluttertoast.showToast(
                                   msg: "Não foi possível resgatar o cupom :(",

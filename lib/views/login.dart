@@ -65,8 +65,10 @@ class _LoginState extends State<Login> {
               Brightness.dark, //navigation bar icons' color
         ),
         child: Scaffold(
-            resizeToAvoidBottomInset: false,
-            body: Container(
+            resizeToAvoidBottomInset: true,
+            body: SingleChildScrollView( 
+              child: Container(
+                height: MediaQuery.of(context).size.height,
               decoration: BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage('assets/images/background.png'),
@@ -234,6 +236,6 @@ class _LoginState extends State<Login> {
                   ],
                 ),
               ),
-            )));
+            ))));
   }
 }
