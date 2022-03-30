@@ -5,6 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:teste/models/Usuario.dart';
 import 'package:teste/views/home.dart';
 import 'package:teste/views/login.dart';
+import 'dart:core';
+import 'package:flutter/services.dart';
 
 class Loading extends StatefulWidget {
   const Loading({ Key? key }) : super(key: key);
@@ -42,17 +44,27 @@ class _LoadingState extends State<Loading> {
     verificaStatus();
     super.initState();
   }
+
+  
   Widget build(BuildContext context) {
-    return Container(
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent, //cor da barra de notificação
+        systemNavigationBarColor: Colors.white, //cor da barra de baixo
+        statusBarIconBrightness: Brightness.dark, // status bar icons' color
+        systemNavigationBarIconBrightness:
+            Brightness.dark, //navigation bar icons' color
+      ),
+      child: Container(
         decoration: new BoxDecoration(
           borderRadius: new BorderRadius.circular(16.0),
           color: Colors.white,
         ),
-      child: SpinKitHourGlass(
+        child: SpinKitHourGlass(
                       color: Colors.red,
                       size: 100.0,
         ),
-      
+      )
     );
   }
 }

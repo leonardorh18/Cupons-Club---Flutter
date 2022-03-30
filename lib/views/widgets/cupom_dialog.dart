@@ -10,7 +10,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class CupomDialog{
   Utils utils = Utils();
-    final spinkit = SpinKitSpinningCircle(
+    final spinkit = SpinKitFoldingCube(
   itemBuilder: (BuildContext context, int index) {
     return DecoratedBox(
       decoration: BoxDecoration(

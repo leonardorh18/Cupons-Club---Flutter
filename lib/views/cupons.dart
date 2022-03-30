@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'dart:ui';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:teste/DAO/CupomDAO.dart';
 import 'package:teste/DAO/TarefaDAO.dart';
 import 'package:teste/models/Cupom.dart';
 import 'package:teste/Utils/utils.dart';
-import 'package:teste/models/Tarefa.dart';
 import 'package:teste/views/detalhes_cupom.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:teste/models/Usuario.dart';
+
+
 class ListCupons extends StatefulWidget {
   Usuario usuario;
   ListCupons(this.usuario);
@@ -27,7 +26,7 @@ class _ListCuponsState extends State<ListCupons> {
   TarefaDAO tarefaDAO = TarefaDAO();
   
 
-  final spinkit = SpinKitWanderingCubes(
+  final spinkit = SpinKitFoldingCube(
   itemBuilder: (BuildContext context, int index) {
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -52,8 +51,9 @@ class _ListCuponsState extends State<ListCupons> {
     buscarCupons(); 
     super.initState();
   }
-  
+
   Widget build(BuildContext context) {
+    
     return carregando ? spinkit : Container(
 
         child: Column(
@@ -64,7 +64,7 @@ class _ListCuponsState extends State<ListCupons> {
                        Padding(padding: EdgeInsets.fromLTRB(20, 18, 10, 3),
                        child:Align(
                          alignment: Alignment.centerLeft,
-                         child:Text('Olá ${widget.usuario.getNome.toString()},',
+                         child:Text('Olá ${widget.usuario.getNome.toString().trim()},',
                             style: GoogleFonts.montserrat(fontSize: 25, color: Colors.black)
                             )
                        ),),
@@ -101,7 +101,6 @@ class _ListCuponsState extends State<ListCupons> {
               
               child: InkWell( 
               onTap: () {
-                
                  Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeftWithFade, child: DetalhesCupom(cupom, widget.usuario)));
               },
               child: Container(
@@ -122,7 +121,7 @@ class _ListCuponsState extends State<ListCupons> {
                             cupom.link_imagem.toString(),
                             height: 100,
                             width: 100,
-                            fit: BoxFit.fitHeight, 
+                            fit: BoxFit.cover, 
                           ),
                         ),
                         )
@@ -144,7 +143,7 @@ class _ListCuponsState extends State<ListCupons> {
                        Align(
                          alignment: Alignment.centerLeft,
                          child:Text(cupom.estabelecimento.nome.toString(),
-                            style: GoogleFonts.montserrat(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white)
+                            style: GoogleFonts.montserratAlternates(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white)
                             )
                        ),
                           
