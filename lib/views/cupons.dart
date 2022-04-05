@@ -173,7 +173,7 @@ class _ListCuponsState extends State<ListCupons> {
 
                       Align(
                         alignment: Alignment.centerRight,
-                        child:Text('${cupom.nome_produto} - ${cupom.porc_desconto.toInt()}% off de R\$ ${cupom.preco} por R\$'+ (cupom.preco * (1 - (cupom.porc_desconto/100))).toStringAsFixed(2),
+                        child:Text('${cupom.nome_produto} - ${cupom.porc_desconto.toInt()}% por R\$'+ (cupom.preco * (1 - (cupom.porc_desconto/100))).toStringAsFixed(2),
                           style: GoogleFonts.montserrat(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.white))
                       ),
                       
