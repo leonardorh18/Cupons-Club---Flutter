@@ -33,7 +33,7 @@ class _DetalhesCupomState extends State<DetalhesCupom> {
     itemBuilder: (BuildContext context, int index) {
       return DecoratedBox(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Colors.red[200],
         ),
       );
     },
@@ -47,8 +47,7 @@ class _DetalhesCupomState extends State<DetalhesCupom> {
   void buscarTarefas(cupom) async {
     cupom.setListaTarefas =
         await tarefaDAO.getTarefasByCupomId(cupom.id.toString());
-    resgatado = await cupomDAO.cupomResgatado(
-        cupom.id.toString(), widget.usuario.getId.toString());
+    resgatado = await cupomDAO.cupomResgatado(cupom.id.toString(), widget.usuario.getId.toString());
     setState(() {
       carregandoTarefas = false;
     });

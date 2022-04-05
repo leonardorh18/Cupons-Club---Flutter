@@ -25,6 +25,16 @@ class Utils {
         timeInSecForIos: 10,
         fontSize: 16.0);
   }
+    showMessageCenter(String message, color) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: color,
+        textColor: Colors.white,
+        timeInSecForIos: 10,
+        fontSize: 16.0);
+  }
 
   Future<void> openMap(double lat, double long) async {
     lat = -26.8691307;

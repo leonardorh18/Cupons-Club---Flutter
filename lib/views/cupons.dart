@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:teste/DAO/CupomDAO.dart';
 import 'package:teste/DAO/TarefaDAO.dart';
@@ -36,7 +37,7 @@ class _ListCuponsState extends State<ListCupons> {
   },
 );
 
-  buscarCupons() async {
+  Future<void> buscarCupons() async {
 
     listaCupons = await cupomDAO.getCupons();
     //print('TAMANHO '+ listaCupons.length.toString());
@@ -54,8 +55,9 @@ class _ListCuponsState extends State<ListCupons> {
 
   Widget build(BuildContext context) {
     
-    return carregando ? spinkit : Container(
-
+    return carregando ? spinkit : RefreshIndicator(
+        onRefresh: buscarCupons,
+        child:Container(
         child: Column(
         children: [
             Container(
@@ -81,7 +83,8 @@ class _ListCuponsState extends State<ListCupons> {
                 ],
               )
             ),
-            Flexible( child: ListView.builder(
+            Flexible( 
+              child: ListView.builder(
               itemCount: listaCupons.length,
               itemBuilder: (context, index){
 
@@ -101,7 +104,14 @@ class _ListCuponsState extends State<ListCupons> {
               
               child: InkWell( 
               onTap: () {
-                 Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeftWithFade, child: DetalhesCupom(cupom, widget.usuario)));
+                  if (cupom.contagem_cupons <= 0){
+                    
+                    utils.showMessageCenter('Cupons esgotados!', Colors.black);
+
+                  }else {
+                    Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeftWithFade, child: DetalhesCupom(cupom, widget.usuario)));
+                  }
+                 
               },
               child: Container(
               
@@ -110,6 +120,7 @@ class _ListCuponsState extends State<ListCupons> {
                       Container(
                         height: 150,
                         decoration: BoxDecoration(
+                          
                           shape: BoxShape.circle,
                       ),
 
@@ -133,17 +144,19 @@ class _ListCuponsState extends State<ListCupons> {
                       lineThickness: 4,
                       dashColor: Colors.white,
                       direction: Axis.vertical,
-                      lineLength: 130,
-                    ),
+                      lineLength: 160,
+                      ),
+                   
 
                     SizedBox(width: 10,),
 
                     Expanded(child: Column(
                       children: [
+                        SizedBox(height: 5,),
                        Align(
                          alignment: Alignment.centerLeft,
                          child:Text(cupom.estabelecimento.nome.toString(),
-                            style: GoogleFonts.montserratAlternates(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white)
+                            style: GoogleFonts.montserratAlternates(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)
                             )
                        ),
                           
@@ -156,26 +169,48 @@ class _ListCuponsState extends State<ListCupons> {
                           )
                         ),
                           
-                      SizedBox(height: 12,),
-
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child:Text('${cupom.nome_produto} - ${cupom.porc_desconto.toInt()}% off',
-                          style: GoogleFonts.montserrat(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.white))
-                      ),
-
                       SizedBox(height: 10,),
 
                       Align(
                         alignment: Alignment.centerRight,
-                        child:Text('Por R\$'+ (cupom.preco * (1 - (cupom.porc_desconto/100))).toStringAsFixed(2) ,
-                          style: GoogleFonts.montserrat(fontSize: 13, color: Colors.white, fontWeight: FontWeight.bold),),
+                        child:Text('${cupom.nome_produto} - ${cupom.porc_desconto.toInt()}% off de R\$ ${cupom.preco} por R\$'+ (cupom.preco * (1 - (cupom.porc_desconto/100))).toStringAsFixed(2),
+                          style: GoogleFonts.montserrat(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.white))
                       ),
                       
                       SizedBox(height: 10,),
                         
-                                               
+                      Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            FaIcon(FontAwesomeIcons.clock, size: 15, color: Colors.yellow,),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'Disponível até '+cupom.data_termino.toString().split(' ')[0],
+                              style: GoogleFonts.montserrat(
+                                  fontSize: 13,
+                                  color: Colors.white,
+                                  fontWeight:
+                                      FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 5),  
+                        Align(
+                            alignment: Alignment.centerRight,
+                            child: Text(
+                            cupom.contagem_cupons.toString() + ' cupons disponíveis',
+                            style: GoogleFonts.montserrat(
+                                fontSize: 13,
+                                color: Colors.white,
+                                fontWeight:
+                                    FontWeight.bold),
+                          )),  
+                        SizedBox(height: 10,)                  
                       ],
+                      
                     )
                     ),
                     SizedBox(width: 5,),
@@ -194,6 +229,6 @@ class _ListCuponsState extends State<ListCupons> {
 
         ],
       ),
-    );
+    ));
   }
 }
