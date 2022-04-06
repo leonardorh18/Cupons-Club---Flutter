@@ -60,7 +60,7 @@ class _LoadingState extends State<Loading> {
           borderRadius: new BorderRadius.circular(16.0),
           color: Colors.white,
         ),
-        child: SpinKitHourGlass(
+        child: SpinKitFoldingCube(
                       color: Colors.red,
                       size: 100.0,
         ),

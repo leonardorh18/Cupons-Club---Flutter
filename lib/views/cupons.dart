@@ -11,7 +11,6 @@ import 'package:teste/views/detalhes_cupom.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:teste/models/Usuario.dart';
 
-
 class ListCupons extends StatefulWidget {
   Usuario usuario;
   ListCupons(this.usuario);
@@ -66,6 +65,7 @@ class _ListCuponsState extends State<ListCupons> {
                        Padding(padding: EdgeInsets.fromLTRB(20, 18, 10, 3),
                        child:Align(
                          alignment: Alignment.centerLeft,
+                         
                          child:Text('Olá ${widget.usuario.getNome.toString().trim()},',
                             style: GoogleFonts.montserrat(fontSize: 25, color: Colors.black)
                             )
@@ -92,8 +92,8 @@ class _ListCuponsState extends State<ListCupons> {
 
               return Card(
               color: Colors.red,
-              elevation: 10,
-              margin: EdgeInsets.fromLTRB(30, 7, 0, 5),
+              elevation: 5,
+              margin: EdgeInsets.fromLTRB(30, 7, 0, 7.5),
 
               shape: BeveledRectangleBorder(
                 borderRadius:BorderRadius.only(
@@ -125,12 +125,18 @@ class _ListCuponsState extends State<ListCupons> {
                       ),
 
                       child: Padding(
-                        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                        
-                        child: ClipRect(
+                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.zero,
+                            bottomLeft: Radius.zero,
+                            bottomRight: Radius.circular(30)
+                            ), // BorderRadius.all(Radius.circular(10)),
                           child: Image.network(
                             cupom.link_imagem.toString(),
-                            height: 100,
+                            height: 150,
                             width: 100,
                             fit: BoxFit.cover, 
                           ),
@@ -187,8 +193,10 @@ class _ListCuponsState extends State<ListCupons> {
                             SizedBox(
                               width: 10,
                             ),
-                            Text(
-                              'Disponível até '+cupom.data_termino.toString().split(' ')[0],
+                           Text(
+                              'Disponível até ' + 
+                              cupom.data_termino.toString().split(' ')[0].split('-')[2] + "/" +
+                              cupom.data_termino.toString().split(' ')[0].split('-')[1],
                               style: GoogleFonts.montserrat(
                                   fontSize: 13,
                                   color: Colors.white,

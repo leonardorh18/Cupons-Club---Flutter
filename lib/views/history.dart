@@ -29,7 +29,7 @@ class _HistoryState extends State<History> {
   double total = 0;
   double eco = 0;
   double economizou = 0;
-  final spinkit = SpinKitWanderingCubes(
+  final spinkit = SpinKitFoldingCube(
     itemBuilder: (BuildContext context, int index) {
       return DecoratedBox(
         decoration: BoxDecoration(
@@ -73,7 +73,7 @@ class _HistoryState extends State<History> {
                     child: Column(
                   children: [
                     Padding(
-                      padding: EdgeInsets.fromLTRB(20, 18, 10, 3),
+                      padding: EdgeInsets.fromLTRB(20, 18, 10, 5),
                       child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text('Histórico',
@@ -81,7 +81,7 @@ class _HistoryState extends State<History> {
                                   fontSize: 25, color: Colors.black))),
                     ),
                      Padding(
-                      padding: EdgeInsets.fromLTRB(20, 5, 10, 3),
+                      padding: EdgeInsets.fromLTRB(20, 5, 10, 30),
                       child:Align(
                           alignment: Alignment.topLeft,
                           child: Text('Você já gastou R\$ ${eco.toStringAsFixed(2)}, economia de R\$ ${economizou.toStringAsFixed(2)}',
@@ -95,9 +95,9 @@ class _HistoryState extends State<History> {
                         itemBuilder: (context, index) {
                           Cupom cupom = listaCupons[index];
                           return Card(
-                              color: Color(0xEAE8E8),
-                              // elevation: 1,
-                              margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                              color: Color(0xFFEAE8E8),
+                              elevation: 5,
+                              margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                               child: InkWell(
                                 onTap: () {
                                   Navigator.push(
@@ -118,12 +118,13 @@ class _HistoryState extends State<History> {
                                           child: Padding(
                                             padding: EdgeInsets.fromLTRB(
                                                 10, 10, 10, 10),
-                                            child: ClipRect(
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.all(Radius.circular(10)),
                                               child: Image.network(
                                                 cupom.link_imagem.toString(),
                                                 height: 100,
                                                 width: 100,
-                                                fit: BoxFit.fitHeight,
+                                                fit: BoxFit.cover,
                                               ),
                                             ),
                                           )),
@@ -139,7 +140,7 @@ class _HistoryState extends State<History> {
                                               child: Text(
                                                   cupom.estabelecimento.nome
                                                       .toString(),
-                                                  style: GoogleFonts.montserrat(
+                                                  style: GoogleFonts.montserratAlternates(
                                                       fontSize: 16,
                                                       fontWeight:
                                                           FontWeight.bold,
@@ -166,7 +167,7 @@ class _HistoryState extends State<History> {
 
                                           Align(
                                             alignment: Alignment.centerRight,
-                                            child:Text('${cupom.nome_produto} - ${cupom.porc_desconto.toInt()}% off de R\$ ${cupom.preco} por R\$'+ (cupom.preco * (1 - (cupom.porc_desconto/100))).toStringAsFixed(2),
+                                            child:Text('${cupom.nome_produto} - por R\$'+ (cupom.preco * (1 - (cupom.porc_desconto/100))).toStringAsFixed(2),
                                               style: GoogleFonts.montserrat(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black))
                                           ),
                                           SizedBox(
@@ -176,12 +177,14 @@ class _HistoryState extends State<History> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
                                             children: [
-                                              FaIcon(FontAwesomeIcons.clock, size: 15, color: Colors.yellow),
+                                              FaIcon(FontAwesomeIcons.clock, size: 15, color: Colors.orange),
                                               SizedBox(
                                                 width: 10,
                                               ),
                                               Text(
-                                                 'Disponível até '+cupom.data_termino.toString().split(' ')[0] ,
+                                                 'Disponível até ' + 
+                                                 cupom.data_termino.toString().split(' ')[0].split('-')[2] + "/" +
+                                                 cupom.data_termino.toString().split(' ')[0].split('-')[1],
                                                 style: GoogleFonts.montserrat(
                                                     fontSize: 13,
                                                     color: Colors.black,

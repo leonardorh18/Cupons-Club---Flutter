@@ -8,7 +8,7 @@ class Utils {
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          return SpinKitHourGlass(
+          return SpinKitFoldingCube(
             color: Colors.red,
             size: 50.0,
           );
