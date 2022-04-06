@@ -33,7 +33,7 @@ class _DetalhesCupomState extends State<DetalhesCupom> {
     itemBuilder: (BuildContext context, int index) {
       return DecoratedBox(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Colors.red,
         ),
       );
     },
