@@ -15,7 +15,7 @@ class CustomAppBar {
           ),
         ),
 
-          title: Text('Cupãozin'),
+          title: Text('Cupons Club'),
 
           actions: [
             PopupMenuButton<int>(
