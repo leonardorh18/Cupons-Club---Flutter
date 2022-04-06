@@ -52,10 +52,14 @@ dev_dependencies:
     sdk: flutter
   mobx_codegen: ^1.1.2
   build_runner: ^1.11.0
+  flutter_launcher_icons: ^0.9.1
   
   
   provider: ^5.0.0
-  
+
+flutter_icons:
+  android: "launcher_icon"
+  image_path: 'asses/images/playstore.png'
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
